@@ -25,6 +25,7 @@ import com.shoporderdetail.model.ShopOrderDetailVO;
 @Table(name="product")
 public class ProductVO {
 	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "product_id", updatable = false)
