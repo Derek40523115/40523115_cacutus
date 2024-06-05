@@ -43,8 +43,6 @@
 				<td th:text="${productVO.productDescribtion}"></td>
 				<td th:text="${productVO.productPrice}"></td>
 				<td th:text="${productVO.productName}"></td>
-<!-- 				<td class="badge bg-success">Success</span> -->
-<!-- 				<td class="badge bg-success" th:text="${productVO.productStatus} ? '上架' : '未上架'"></td> -->
 				<td>
                     <span th:if="${productVO.productStatus} eq true" class="badge bg-success">上架</span>
                      <span th:if="${productVO.productStatus} eq false" class="badge bg-danger">下架</span>
@@ -58,11 +56,7 @@
 			
 			</td>
 			
-<!-- 			 <c:if test="${getOne_For_Display}">旗標getOne_For_Display見EmpnoController.java的第74行 -->
-<!-- 		         <div class="b"> -->
-<!-- 			      <%@ include file="listOneEmp-div-fragment.file" %> <%-- 或(也可) <jsp:include page="listOneEmp.jsp" /> --%> -->
-<!-- 			     </div>   -->
-<!-- 		    </c:if> -->
+
 
 
 			</tr>

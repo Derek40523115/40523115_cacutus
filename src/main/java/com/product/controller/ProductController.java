@@ -134,24 +134,6 @@ public class ProductController {
 			}
 		}
 		
-//		 if (!productPhoto.isEmpty()) {
-//		        try {
-//		            // 讀取文件內容到字節數組
-//		            byte[] bytes = productPhoto.getBytes();
-//		            productVO.setProductPhoto(bytes);
-//		        } catch (IOException e) {
-//		            // 處理讀取文件時的錯誤
-//		            model.addAttribute("errorMessage", "讀取文件錯誤");
-//		            return "back-end/product/addProduct";
-//		        }
-//		    } else {
-//		        model.addAttribute("errorMessage", "商品照片: 請上傳照片");
-//		    }
-		
-//		if (result.hasErrors()) {
-//			System.out.println("有錯誤");
-//			return "back-end/product/addProduct";
-//		}
 		
 		if (result.hasErrors()) {
 //		    System.out.println("驗證錯誤：");
@@ -166,7 +148,7 @@ public class ProductController {
 		/***************************3.新增完成,準備轉交(Send the Success view)***********/
 		List<ProductVO> list = productSvc.getAll();
 		model.addAttribute("productListData", list);
-		model.addAttribute("success", "- (新增成功)");
+//		model.addAttribute("success", "- (新增成功)");
 		System.out.println("成功新增");
 		return "back_end/product/listAllProduct"; // 新增成功後轉交listAllProduct.jsp
 	}

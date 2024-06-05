@@ -30,7 +30,7 @@ public class ProductCategoryVO {
 	@OrderBy("productId asc")//新增的有可能出錯
 	private Set<ProductVO> productVOs;
 	
-	@Column(name = "product_category_name", nullable = false)
+	@Column(name = "product_category_name")
 	@NotEmpty(message="類別名稱: 請勿空白")
 	private String productCategoryName;
 	
