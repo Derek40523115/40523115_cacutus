@@ -27,7 +27,7 @@ import com.activities_item.model.ItemService;
 
 @Controller
 public class ActivitiesController {
-	//123
+	//12
 	@Autowired
 	CategoryService categoryService;
 	
