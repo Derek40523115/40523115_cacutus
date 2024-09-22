@@ -27,7 +27,7 @@ import com.activities_item.model.ItemService;
 
 @Controller
 public class ActivitiesController {
-	//測是
+	//測
 	@Autowired
 	CategoryService categoryService;
 	
