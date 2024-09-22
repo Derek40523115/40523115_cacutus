@@ -137,7 +137,7 @@
 
             <td th:if="${promotion.promotionDiscount >= 0.1}" th:text="${#numbers.formatDecimal(promotion.promotionDiscount * 10, 0, 0)} + '折'"></td>
             <td th:unless="${promotion.promotionDiscount >= 0.1}" th:text="${#numbers.formatDecimal(promotion.promotionDiscount * 100, 0, 0)} + '折'"></td>
-
+<!-- <td th:text="${promotion.promotionStarted}"></td> -->
             <td th:text="${promotion.promotionStarted+'~'+promotion.promotionEnd}"></td>
             <td>
                 <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"

@@ -85,7 +85,7 @@
 				<td th:text="${productVO.productDescribtion}"></td>
 				<td th:text="${productVO.productPrice}"></td>
 				<td th:text="${productVO.productName}"></td>
-				<td th:text="${productVO.productStatus}"></td>
+				<td th:if="${productVO.productStatus eq false}">下架</td>
 				<td><img th:src="@{/product/DBGifReader} + '?productId=' + ${productVO.productId}" width="100px"></td>
 			<td>
 			  <form method="post" th:action="@{/product/getOnehistory_For_Update}" style="margin-bottom: 0px;">

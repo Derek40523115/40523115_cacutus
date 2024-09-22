@@ -48,7 +48,7 @@ public class ProductController {
 		return "back_end/product/listAllProductCategory";
 	}
 	
-	@GetMapping("/historyProduct")
+	@GetMapping("/historyProduct")//我寫的
 	public String historyProduct(Model model) {
 		return "back_end/product/historyProduct";
 	}
@@ -63,7 +63,7 @@ public class ProductController {
 		return "front_end/product/shop_index";
 	}
 
-	@GetMapping("/listAllProduct1")
+	@GetMapping("/listAllProduct1")//我寫的
 	public String listAllEmp(Model model) {
 		return "back_end/product/listAllProduct";
 	}
@@ -373,12 +373,12 @@ public class ProductController {
 		return mapData;
 	}
 	
-	@ModelAttribute("productCategoryListData")
-	protected List<ProductCategoryVO> referenceListData() {
-		// DeptService deptSvc = new DeptService();
-		List<ProductCategoryVO> list = ProductCategorySvc.getAll();
-		return list;
-	}
+//	@ModelAttribute("productCategoryListData")
+//	protected List<ProductCategoryVO> referenceListData() {
+//		// DeptService deptSvc = new DeptService();
+//		List<ProductCategoryVO> list = ProductCategorySvc.getAll();
+//		return list;
+//	}
 	
 	
 	// 去除BindingResult中某個欄位的FieldError紀錄

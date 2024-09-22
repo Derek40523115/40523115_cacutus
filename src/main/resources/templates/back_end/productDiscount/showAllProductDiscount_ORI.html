@@ -12,45 +12,44 @@
     }
 </style>
 <body>
-
 <div th:replace="~{/back_end/include/include_body}"></div>
 
-<div class="unique">
-<input class="btn btn-primary" type="submit" value="新增商品" onclick="location.href='/product/addProduct';">
-<table id="productListData" class="display" style="width: 100%">
-  <thead >
-	<tr style="background-color:#CCCCFF">
+<!-- <table id="productListData" class="display" style="width: 100%"> -->
+<table id="productListData" class="display">
+  <thead>
+ 	 <tr>
+<!-- 	<tr style="background-color:#CCCCFF"> -->
 <!-- 		<th>計數</th> -->
-		<th>商品編號</th>
-		<th>商品類別</th>
-		<th>商品簡述</th>
-		<th>商品價格</th>
-		<th>商品名稱</th>
-		<th>商品狀態</th>
-		<th>商品圖片</th>
-		<th>修改</th>
+		<th>折扣編號</th>
+<!-- 		<th>商品類別</th> -->
+<!-- 		<th>商品簡述</th> -->
+<!-- 		<th>商品價格</th> -->
+<!-- 		<th>商品名稱</th> -->
+<!-- 		<th>商品狀態</th> -->
+<!-- 		<th>商品圖片</th> -->
+<!-- 		<th>修改</th> -->
 <!-- 		<th>刪除</th> -->
 	</tr>
   </thead>
 	
   <tbody>
-		<th:block th:each="productVO : ${productListData}">
-		<div th:if="${productVO.productStatus == true}">
+		<th:block th:each="ShopDiscountProjectVO : ${shopProductDiscount}">
+<!-- 		<div th:if="${productVO.productStatus == true}"> -->
 			<tr>
 <!-- 				<td th:text="${empVOStat.count}"></td> -->
-				<td th:text="${productVO.productId}"></td>
-				<td th:text="${productVO.productCategoryVO.productCategoryName}"></td>
-				<td th:text="${productVO.productDescribtion}"></td>
-				<td th:text="${productVO.productPrice}"></td>
-				<td th:text="${productVO.productName}"></td>
-				<td th:if="${productVO.productStatus}">上架</td>
-				<td><img th:src="@{/product/DBGifReader} + '?productId=' + ${productVO.productId}" width="100px"></td>
-			<td>
-			  <form method="post" th:action="@{/product/getOne_For_Update}" style="margin-bottom: 0px;">
-			     <input type="submit" value="修改">
-			     <input type="hidden" name="productId" th:value="${productVO.productId}"></form>
+				<td th:text="${ShopDiscountProjectVO.promotionId}"></td>
+<!-- 				<td th:text="${ShopDiscountProjectVO.productCategoryVO.productCategoryName}"></td> -->
+<!-- 				<td th:text="${ShopDiscountProjectVO.productDescribtion}"></td> -->
+<!-- 				<td th:text="${ShopDiscountProjectVO.productPrice}"></td> -->
+<!-- 				<td th:text="${ShopDiscountProjectVO.productName}"></td> -->
+<!-- 				<td th:text="${ShopDiscountProjectVO.productStatus}"></td> -->
+<!-- 				<td><img th:src="@{/product/DBGifReader} + '?productId=' + ${productVO.productId}" width="100px"></td> -->
+<!-- 			<td> -->
+<!-- 			  <form method="post" th:action="@{/product/getOne_For_Update}" style="margin-bottom: 0px;"> -->
+<!-- 			     <input type="submit" value="修改"> -->
+<!-- 			     <input type="hidden" name="productId" th:value="${productVO.productId}"></form> -->
 			
-			</td>
+<!-- 			</td> -->
 			
 <!-- 			 <c:if test="${getOne_For_Display}">旗標getOne_For_Display見EmpnoController.java的第74行 -->
 <!-- 		         <div class="b"> -->
@@ -59,16 +58,11 @@
 <!-- 		    </c:if> -->
 
 
-			</tr>
+<!-- 			</tr> -->
 		</div>
-		</th:block>
+<!-- 		</th:block> -->
   </tbody>
 </table>
-
-</div>
-
-
-
 
 
 <div th:replace="~{/back_end/include/include_bottom}"></div>

@@ -19,7 +19,7 @@ public class CartService {
         // 拿到前端的購物項 先轉成JSON物件
         Gson gson = new Gson();
         String dtoString = gson.toJson(cartItem);
-//        System.out.println(dtoString);
+//        System.out.println("dtoString = " + dtoString);
 
         JsonObject newItem = gson.fromJson(dtoString, JsonObject.class);
 
