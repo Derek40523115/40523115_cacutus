@@ -1,5 +1,6 @@
 package com.productpromotion.model;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,5 +29,9 @@ public class ShopDiscountService {
 	
 	public void updateShopDiscount(ShopDiscountProjectVO shopDiscountProjectVO) {
 		shopDiscountRepository.save(shopDiscountProjectVO);
+	}
+	
+	public List<ShopDiscountProjectVO> usePromotion(LocalDate today) {
+		return shopDiscountRepository.usePromotion(today);
 	}
 }

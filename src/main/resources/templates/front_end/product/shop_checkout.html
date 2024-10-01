@@ -159,7 +159,7 @@
 			        </tr>
 			        </thead>
 			        <tbody id="tableBody">
-			        <!-- 從AJAX動態新增 -->
+			        <!-- 從AJAX動態新增 --><!-- 322行 -->
 			
 			        </tbody>
 			    </table>
@@ -167,7 +167,9 @@
 			    <hr>
 			    
 			    <div class="total-price">
+			    	<p>折扣數: <span id="discount-amount"></span></p>
 			        <span>訂單總價:$ <input type=text id="cart-total" name="productTotal" readonly/></span>
+			        <input type="hidden" th:value="${productPromotion}" id="productPromotion" name="productPromotion" />
 			    </div>
 			    
 			    
@@ -431,7 +433,23 @@
 	//         console.log(itemTotal);
 	//         console.log(cartTotal);
 	    });
-	    cartTotalElement.value =  cartTotal;
+	    
+	    const discountAmount = document.getElementById("discount-amount");
+	    
+	    const productPromotion = document.getElementById("productPromotion");
+	    
+	    let promotion = parseFloat(productPromotion.value || "0");
+// 	    console.log(productPromotion.value);
+		if(productPromotion.value == 0)
+	    	cartTotalElement.value =  cartTotal;
+		else
+			cartTotalElement.value =  cartTotal*productPromotion.value;
+		
+		//顯示打幾折
+		 if(promotion *10 % 1 == 0 && promotion!=0)
+	        	discountAmount.innerHTML = productPromotion.value*10 + "折";
+	     else
+	       	discountAmount.innerHTML = Math.round(productPromotion.value*100) + "折";
 	}
 
 

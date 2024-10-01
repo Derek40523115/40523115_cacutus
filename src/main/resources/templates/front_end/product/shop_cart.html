@@ -14,19 +14,29 @@
 		font-size:1.3rem;
 	}
 	
-	button#checkout-button,button#cleanShopCart{
+	input#checkout-button,button#cleanShopCart{
 		font-size:1.3rem;
 	}
 	
-	button#checkout-button{
-		margin-top:10px;
-		margin-left:900px;
-	}
+/* 	button#checkout-button{ */
+/* 		margin-top:10px; */
+/* 		margin-left:900px; */
+/* 	} */
 	
-	button#cleanShopCart{
-		margin-top:10px;
-		margin-left:20px;
-	}
+/* 	button#cleanShopCart{ */
+/* 		margin-top:10px; */
+/* 		margin-left:20px; */
+/* 	} */
+	
+/* 	input#checkout-button{ */
+/* 		margin-top:10px; */
+/* 		margin-left:900px; */
+/* 	} */
+	
+/* 	input#cleanShopCart{ */
+/* 		margin-top:10px; */
+/* 		margin-left:20px; */
+/* 	} */
 			
 	
 	
@@ -62,6 +72,22 @@
     	.-cartnone{
     		display:none;
     	}
+    	
+    .checkout-container {
+    display: flex; /* 使用 flex 讓元素水平排列 */
+    align-items: center; /* 讓所有元素在垂直方向居中對齊 */
+    margin-top: 10px; /* 設置容器的頂部外邊距 */
+	}
+	
+	select#productPromotion {
+	    margin-right: 20px; /* 給 select 元素添加右邊距，避免和按鈕靠得太近 */
+	    margin-left: 900px; 
+	}
+	
+	button#checkout-button {
+	    margin-right: 20px; /* 設置 "確認下單" 按鈕的右邊距 */
+	}
+
 
 
 </style>
@@ -156,18 +182,37 @@
 		
 		</div>
 	</div>
+<!-- 	活動優惠 -->
+<!-- 	<div> -->
+<!-- 	<select id="productPromotion"> -->
+<!-- 		<option value="0">請選擇活動優惠</option> -->
+<!-- 		<option th:each="item : ${shopProductDiscount}" th:value="${item.promotionCoupon}" th:text="${item.promotionTitle}"/> -->
+<!-- 	</select> -->
+	
+<!-- 	</div> -->
+	
 	
 	<br>
 	<br>
 	
-	
+<!-- 	P.265 -->
 	<div class="total-price">
+		<p>折扣數: <span id="discount-amount"></span></p>
         <p>總價: <span id="cart-total"></span></p>
     </div>
     
-    <button type="button" id="checkout-button" class="checkout-button">確認下單</button>
-    <button type="button" id="cleanShopCart" class="cleanShopCart">清空購物車</button>
-
+<!--     <button type="button" id="checkout-button" class="checkout-button">確認下單</button> -->
+<!--     <button type="button" id="cleanShopCart" class="cleanShopCart">清空購物車</button> -->
+	
+<!-- 	活動折扣P.267 -->
+	<form method="get" th:action="@{/shopCart/CartToCheckout}">
+		<select name="productPromotion" id="productPromotion">
+			<option value="0">請選擇活動優惠</option>
+			<option th:each="item : ${shopProductDiscount}" th:value="${item.promotionCoupon}" th:text="${item.promotionTitle}"/>
+		</select>
+		<input type="submit" value="確認下單">
+		<button type="button" id="cleanShopCart" class="cleanShopCart">清空購物車</button>
+	</form>
 
 
 
@@ -201,7 +246,7 @@ function getShopCart() {
                     html += `<tr>
                                     <td>${item.productId}</td>
                                     <td>${item.productName} <br> ${a_string}</td>
-                                    <td><input type="number" min="1" value="${item.quantity}"></td>
+                                    <td><input type="number" min="1" value="${item.quantity}"></td><!-- 350行監聽總價 -->
                                     <td>${item.price}</td>
                                     <td class="item-total">${item.quantity * item.price}</td>
                                     <td><button class="remove-button" data-product-id="${item.productId}">移除</button></td>
@@ -243,9 +288,49 @@ getShopCart();
 function eventButton() {
     // 取得元素
     const removeButtons = document.querySelectorAll('.remove-button');
+    console.log(removeButtons);
     const quantityInputs = document.querySelectorAll('.cart-container tbody tr input[type="number"]');
     const cartTotalElement = document.getElementById('cart-total');
+    const productPromotion = document.getElementById('productPromotion');
+    
+    productPromotion.addEventListener('change',shopDiscount);
+  
+    //活動折價
+    function shopDiscount(){
+    	
+    	const discountAmount = document.getElementById("discount-amount");
+    	console.log(discountAmount);
+    	const itemTotalElements = document.querySelectorAll('.item-total');
+    	
+    	let cartTotal = 0;
+        itemTotalElements.forEach((itemTotalElement) => {
+            const itemTotal = parseFloat(itemTotalElement.textContent.replace('$', ''));//指向itemTotalElement單向商品總價欄位
+            cartTotal += itemTotal;
+        });
+    	
+    	
+		 let promotion = parseFloat(productPromotion.value || "0"); // 確保轉換為數字，且預設為 0
+		 console.log(promotion);
+		 
+		
 
+        // 如果活動折扣是 0，直接顯示總金額；否則，應用折扣
+        if (promotion === 0) {
+            cartTotalElement.textContent = '$' + cartTotal;
+            discountAmount.innerHTML = "";
+        } else {
+            cartTotalElement.textContent = '$' + Math.round(cartTotal * promotion);
+        }
+        
+        if(promotion *10 % 1 == 0 && promotion!=0)
+        	discountAmount.innerHTML = productPromotion.value*10 + "折";
+        else
+        	 discountAmount.innerHTML = Math.round(productPromotion.value*100) + "折";
+//         console.log(productPromotion.value*100);
+    		
+    }
+    
+    
     // 移除商品
     function removeItem(event) {
     	
@@ -285,13 +370,23 @@ function eventButton() {
     // 更新購物車總價
     function updateCartTotal() {
         const itemTotalElements = document.querySelectorAll('.item-total');
+        
+//         console.log(productPromotion);
         let cartTotal = 0;
         itemTotalElements.forEach((itemTotalElement) => {
-            const itemTotal = parseFloat(itemTotalElement.textContent.replace('$', ''));
+            const itemTotal = parseFloat(itemTotalElement.textContent.replace('$', ''));//指向itemTotalElement單向商品總價欄位
             cartTotal += itemTotal;
         });
         cartTotalElement.textContent = '$' + cartTotal;
+
+       
+
+        
+        
     }
+    //移除商品跟更改數量會執行，第一次抓購物車資料會執行一次
+    // 初始化購物車總價
+    updateCartTotal();
 
     // 監聽移除按鈕點擊事件
     removeButtons.forEach((removeButton) => {
@@ -302,7 +397,7 @@ function eventButton() {
     quantityInputs.forEach((quantityInput) => {
         quantityInput.addEventListener('input', () => {
             const itemRow = quantityInput.closest('tr');
-            updateItemTotal(itemRow);
+            updateItemTotal(itemRow);//單樣商品更新
             updateCartTotal();
 
             const productId = itemRow.querySelector('td:nth-child(1)').textContent;
@@ -328,7 +423,7 @@ function eventButton() {
 
 
     // 初始化購物車總價
-    updateCartTotal();
+//     updateCartTotal();
 
     function updateRedisCart(productId, quantity) {
         const cartItem = {

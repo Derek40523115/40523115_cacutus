@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import com.member.model.MemberVO;
@@ -55,6 +56,11 @@ public class ShopOrderVO {
 	@NotNull
 	@Column(name = "customer_address", nullable = false)
 	private String address;
+	
+	
+	@Transient
+	private String promotion;
+	
 	
 	
 	
@@ -150,6 +156,14 @@ public class ShopOrderVO {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public String getPromotion() {
+		return promotion;
+	}
+
+	public void setPromotion(String promotion) {
+		this.promotion = promotion;
 	}
 	
 	
