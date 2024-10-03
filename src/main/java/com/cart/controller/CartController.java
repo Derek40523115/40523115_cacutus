@@ -259,4 +259,18 @@ public class CartController {
 		}		
 	}
 	
+	
+	 // 導入購物車頁面
+    @GetMapping("/shopCart02")
+    public String shopCart02(ModelMap model,HttpSession session) {
+    	//活動折扣
+    	LocalDate today = LocalDate.now();
+    	List<ShopDiscountProjectVO> shopProductDiscount = shopDiscountService.usePromotion(today);
+//    	System.out.println("測試 = " + shopProductDiscount);
+		model.addAttribute("shopProductDiscount", shopProductDiscount);
+//    	session.setAttribute("shopProductDiscount", shopProductDiscount);
+		//到這
+        return "front_end/product/cart";
+    }
+	
 }

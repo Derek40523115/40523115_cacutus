@@ -310,7 +310,7 @@ function eventButton() {
     	
     	
 		 let promotion = parseFloat(productPromotion.value || "0"); // 確保轉換為數字，且預設為 0
-		 console.log(promotion);
+// 		 console.log(promotion);
 		 
 		
 
@@ -323,9 +323,9 @@ function eventButton() {
         }
         
         if(promotion *10 % 1 == 0 && promotion!=0)
-        	discountAmount.innerHTML = productPromotion.value*10 + "折";
+        	discountAmount.innerHTML = promotion*10 + "折";
         else
-        	 discountAmount.innerHTML = Math.round(productPromotion.value*100) + "折";
+        	 discountAmount.innerHTML = Math.round(promotion*100) + "折";
 //         console.log(productPromotion.value*100);
     		
     }

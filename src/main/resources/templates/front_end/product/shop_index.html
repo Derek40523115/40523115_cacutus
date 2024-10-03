@@ -79,7 +79,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="keywordSelect">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="keywordSelect"><!-- P.423 -->
 <!--       <li class="nav-item"> -->
 <!--           <a class="nav-link active" aria-current="page" href="#">熱賣商品</a> -->
 <!--         </li> -->
@@ -420,7 +420,7 @@ $(document).ready(function() {
     });
 
     // 绑定a標籤
-    $("#keywordSelect a").on("click", function() {
+    $("#keywordSelect a").on("click", function() {//P.82
         var keyword = $(this).attr("data-value").toLowerCase();
         selectedCategory = keyword; // 更新當前選中的活動類别
         currentPage = 1; // 重置頁碼為1
@@ -436,13 +436,18 @@ $(document).ready(function() {
 
     function searchItems(searchKeyword, categoryKeyword) {
         $("#photoList .col").hide(); // 隱藏所有項目
-
+        
         var filteredItems = $("#photoList .col").filter(function() {
             var text = $(this).text().toLowerCase();
+            console.log(this);
+            console.log(text);
+            console.log(categoryKeyword);
+            console.log(text.indexOf(categoryKeyword));
             var isVisible = (text.indexOf(searchKeyword) > -1 || searchKeyword === "") &&
                             (text.indexOf(categoryKeyword) > -1 || categoryKeyword === "");
             return isVisible;
         });
+        console.log(filteredItems);
 
         var totalMatches = filteredItems.length;
         var totalPages = Math.ceil(totalMatches / itemsPerPage);

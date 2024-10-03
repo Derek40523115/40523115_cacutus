@@ -422,6 +422,7 @@ public class ProductController {
 			return "/front_end/product/shop_index" ;
 		}
 		
+		
 		@GetMapping("/listOneProduct")
 		public String listOneProduct(ModelMap model,
 				@RequestParam("productId") String productId) {
@@ -467,6 +468,26 @@ public class ProductController {
 //	        model.addAttribute("productVO", productVO);
 //	        return "/front_end/product/shop_singleORI";
 //	    }
+		
+		
+		//新的商店前端網頁
+				@GetMapping("/listAllProduct2")
+				public String listAllProduct2(ModelMap model) {
+					List<ProductVO> list1 = productSvc.getAll();
+					model.addAttribute("productList", list1);
+					
+					List<ProductCategoryVO> list2 = ProductCategorySvc.getAll();
+					model.addAttribute("productCategoryList", list2);
+					
+					return "/front_end/product/shop" ;
+				}
+				
+				@GetMapping("/listOneProduct2")
+				public String listOneProduct2(@RequestParam("productId") String productId, ModelMap model) {
+					ProductVO productVO = productSvc.findById( Integer.valueOf(productId) );
+					model.addAttribute("productVO", productVO);
+					return "/front_end/product/detail";
+				}
 		
 		
 }
