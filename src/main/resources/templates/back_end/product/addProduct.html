@@ -67,25 +67,26 @@
         </div>
 
         <!-- 照片上传 -->
-<!--         <div class="mb-3"> -->
-<!--             <label for="productPhoto" class="form-label">商品照片</label> -->
-<!--             <input type="file" class="form-control" th:field="*{productPhoto}" multiple="multiple" onchange="previewImage()"> -->
-<!--             <span class="error" th:utext="${errorMessage}" id="productPhoto.errors">${errorMessage}</span> -->
-<!--             <div id="blob_holder" class="mt-2"></div> -->
-<!--         </div> -->
-        
-        <!-- 老師範例 -->
         <div class="mb-3">
-			 <label for="productPhoto" class="form-label">商品照片</label>
-			<input type="file" class="form-control" th:field="*{productPhoto}" onclick="previewImage()" multiple="multiple" onchange="hideContent('upFiles.errors');" />
-<!-- 			<span  th:if="${#fields.hasErrors('upFiles')}" th:errors="*{upFiles}" class="error" id="upFiles.errors"></span> -->
-			<span class="error" th:utext="${errorMessage}" id="productPhoto.errors">${errorMessage}</span>
-<!-- 			<h2 id="errorMessage">${errorMessage}</h2>  -->
-			<div id="blob_holder" class="mt-2"></div>
-			</div>
+            <label for="productPhotoVos" class="form-label">商品照片</label>
+            <input type="file" class="form-control" th:field="*{productPhotoVos}" multiple="multiple" onclick="previewImage()">
+            <span class="error" th:utext="${errorMessage}" id="productPhotos.errors"></span>
+            <div id="blob_holder" class="mt-2"></div>
+        </div>
+        
+        
+        <!-- 老師範例(舊) -->
+<!--         <div class="mb-3"> -->
+<!-- 			 <label for="productPhoto" class="form-label">商品照片</label> -->
+<!-- 			<input type="file" class="form-control" th:field="*{productPhoto}" onclick="previewImage()" multiple="multiple" onchange="hideContent('upFiles.errors');" /> -->
+<!-- <!-- 			<span  th:if="${#fields.hasErrors('upFiles')}" th:errors="*{upFiles}" class="error" id="upFiles.errors"></span> -->
+<!-- 			<span class="error" th:utext="${errorMessage}" id="productPhoto.errors">${errorMessage}</span> -->
+<!-- <!-- 			<h2 id="errorMessage">${errorMessage}</h2>  -->
+<!-- 			<div id="blob_holder" class="mt-2"></div> -->
+<!-- 			</div> -->
 
         <!-- 提交按钮 -->
-        <button type="submit" class="btn btn-primary">提交新增</button>
+        <button type="submit" id="submit" class="btn btn-primary">提交新增</button>
     </form>
 </div>
 </div>	
@@ -110,9 +111,10 @@ acceptedTypes = {
 		'image/gif' : true
 };
 function previewImage() {
-	var upfile1 = document.getElementById("productPhoto");
+	var upfile1 = document.getElementById("productPhotoVos");
 	upfile1.addEventListener("change", function(event) {
 		var files = event.target.files || event.dataTransfer.files;
+		console.log(files);
 		for (var i = 0; i < files.length; i++) {
 			previewfile(files[i])
 		}
@@ -124,12 +126,12 @@ function previewfile(file) {
 		reader.onload = function(event) {
 			var image = new Image();
 			image.src = event.target.result;
-			image.width = 100;
-			image.height = 75;
+			image.width = 300;
+			image.height = 300;
 			image.border = 2;
-			if (blob_holder.hasChildNodes()) {
-				blob_holder.removeChild(blob_holder.childNodes[0]);
-			}
+// 			if (blob_holder.hasChildNodes()) {
+// 				blob_holder.removeChild(blob_holder.childNodes[0]);
+// 			}
 			blob_holder.appendChild(image);
 		};
 		reader.readAsDataURL(file);

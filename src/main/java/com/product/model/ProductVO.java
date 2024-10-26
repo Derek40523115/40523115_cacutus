@@ -1,6 +1,8 @@
 package com.product.model;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
@@ -18,7 +21,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.productcategory.model.ProductCategoryVO;
+import com.productcomment.model.ProductCommentVO;
+import com.productphoto.model.ProductPhotoVo;
 import com.shoporderdetail.model.ShopOrderDetailVO;
 
 @Entity
@@ -30,13 +37,16 @@ public class ProductVO {
 	@Column(name = "product_id", updatable = false)
 	private Integer productId;
 
+	@OrderBy("productPhotoId asc")
+	@OneToMany(mappedBy = "productVO", cascade = CascadeType.ALL)
+	private Set<ProductPhotoVo> productPhotoVos;
 	
-//	@OneToMany(mappedBy = "productVO", cascade = CascadeType.ALL)
-//	private Set<ProductPhotoVo> ProductPhotoVos;
+//	@OneToMany(mappedBy = "productVO" , cascade = CascadeType.ALL)
+//	private Set<ProductPhotoVo> productPhotos;
 	
 	//圖片改放入商品資料庫
-	@Column(name = "product_photo", columnDefinition = "longblob")
-	private byte[] productPhoto;
+//	@Column(name = "product_photo", columnDefinition = "longblob")
+//	private byte[] productPhoto;
 	
 	@ManyToOne
 	@JoinColumn(name = "product_category_id", referencedColumnName = "product_category_id")//name是我們的欄位，refer是我們參考別資料庫的欄位
@@ -63,6 +73,20 @@ public class ProductVO {
 	@OneToMany(mappedBy = "product" , cascade = CascadeType.ALL)
 	private Set<ShopOrderDetailVO> shopOrderDetailVO;
 	
+//	@JsonManagedReference  // 父對象使用這個註解
+	@JsonIgnore
+	@OneToMany(mappedBy="product", cascade = CascadeType.ALL)
+	private Set<ProductCommentVO> productCommentVO;
+	
+	
+	public Set<ProductCommentVO> getProductCommentVO() {
+		return productCommentVO;
+	}
+
+	public void setProductCommentVO(Set<ProductCommentVO> productCommentVO) {
+		this.productCommentVO = productCommentVO;
+	}
+	
 
 
 	public Set<ShopOrderDetailVO> getShopOrderDetailVO() {
@@ -81,21 +105,22 @@ public class ProductVO {
 		this.productId = productId;
 	}
 	
-//	public Set<ProductPhotoVo> getProductPhotoVos() {
-//		return ProductPhotoVos;
-//	}
 	
 
-//	public void setProductPhotoVos(Set<ProductPhotoVo> productPhotoVos) {
-//		ProductPhotoVos = productPhotoVos;
+//	public byte[] getProductPhoto() {
+//		return productPhoto;
+//	}
+//
+//	public void setProductPhoto(byte[] productPhoto) {
+//		this.productPhoto = productPhoto;
 //	}
 
-	public byte[] getProductPhoto() {
-		return productPhoto;
+	public Set<ProductPhotoVo> getProductPhotoVos() {
+		return productPhotoVos;
 	}
 
-	public void setProductPhoto(byte[] productPhoto) {
-		this.productPhoto = productPhoto;
+	public void setProductPhotoVos(Set<ProductPhotoVo> productPhotoVos) {
+		this.productPhotoVos = productPhotoVos;
 	}
 
 	public ProductCategoryVO getProductCategoryVO() {

@@ -82,17 +82,21 @@
                 <div class="col-sm-2 p-sm-0 order-2 order-sm-1 mt-2 mt-sm-0 px-xl-2">
                   <div class="swiper product-slider-thumbs">
                     <div class="swiper-wrapper">
-                      <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" th:src="@{/product/ShowProductPic} + '?productId=' + ${productVO.productId}" alt="..."></div>
-                      <div class="swiper-slide h-auto swiper-thumb-itAem mb-3"><img class="w-100" th:src="@{/img/product/product-detail-2.jpg}" alt="..."></div>
-                      <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" th:src="@{/img/product/product-detail-3.jpg}" alt="..."></div>
-                      <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" th:src="@{/img/product/product-detail-4.jpg}" alt="..."></div>
+                    <th:block th:each="productPhotoVO : ${productVO.productPhotoVos}">
+                      <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" th:src="@{/product/ShowProductPic} + '?productId=' + ${productVO.productId} + '&productPhotoId=' + ${productPhotoVO.productPhotoId}" alt="..."></div>
+                      </th:block>
+<!--                       <div class="swiper-slide h-auto swiper-thumb-itAem mb-3"><img class="w-100" th:src="@{/img/product/product-detail-2.jpg}" alt="..."></div> -->
+<!--                       <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" th:src="@{/img/product/product-detail-3.jpg}" alt="..."></div> -->
+<!--                       <div class="swiper-slide h-auto swiper-thumb-item mb-3"><img class="w-100" th:src="@{/img/product/product-detail-4.jpg}" alt="..."></div> -->
                     </div>                                                                      
                   </div>
                 </div>
                 <div class="col-sm-10 order-1 order-sm-2">
                   <div class="swiper product-slider">
                     <div class="swiper-wrapper">
-                      <div class="swiper-slide h-auto"><a class="glightbox product-view" href="img/product-detail-1.jpg" data-gallery="gallery2" data-glightbox="Product item 1"><img class="img-fluid" th:src="@{/product/ShowProductPic} + '?productId=' + ${productVO.productId}" alt="..."></a></div>
+                    <th:block  th:each="productPhotoVO : ${productVO.productPhotoVos}">
+                      <div class="swiper-slide h-auto"><a class="glightbox product-view" href="img/product-detail-1.jpg" data-gallery="gallery2" data-glightbox="Product item 1"><img class="img-fluid" th:src="@{/product/ShowProductPic} + '?productId=' + ${productVO.productId} + '&productPhotoId=' + ${productPhotoVO.productPhotoId}" alt="..."></a></div>
+                      </th:block>
                       <div class="swiper-slide h-auto"><a class="glightbox product-view" href="img/product-detail-2.jpg" data-gallery="gallery2" data-glightbox="Product item 2"><img class="img-fluid" th:src="@{/img/product/product-detail-2.jpg}" alt="..."></a></div>
                       <div class="swiper-slide h-auto"><a class="glightbox product-view" href="img/product-detail-3.jpg" data-gallery="gallery2" data-glightbox="Product item 3"><img class="img-fluid" th:src="@{/img/product/product-detail-3.jpg}" alt="..."></a></div>
                       <div class="swiper-slide h-auto"><a class="glightbox product-view" href="img/product-detail-4.jpg" data-gallery="gallery2" data-glightbox="Product item 4"><img class="img-fluid" th:src="@{/img/product/product-detail-4.jpg}" alt="..."></a></div>
@@ -113,13 +117,13 @@
               <input type="hidden" class="addToCartId" name="productId" th:value="${productVO.productId}"/>
               <h1 th:text="${productVO.productName}">Red digital smartwatch</h1>
               <p class="text-muted lead" th:text="'$'+${productVO.productPrice}">$250</p>
-              <p class="text-sm mb-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ut ullamcorper leo, eget euismod orci. Cum sociis natoque penatibus et magnis dis parturient montes nascetur ridiculus mus. Vestibulum ultricies aliquam convallis.</p>
+              <p class="text-sm mb-4"></p>
               <div class="row align-items-stretch mb-4">
                 <div class="col-sm-5 pr-sm-0">
                   <div class="border d-flex align-items-center justify-content-between py-1 px-3 bg-white border-white"><span class="small text-uppercase text-gray mr-4 no-select">Quantity</span>
                     <div class="quantity">
                       <button class="dec-btn p-0"><i class="fas fa-caret-left"></i></button>
-                      <input class="form-control border-0 shadow-0 p-0" type="text" value="1">
+                      <input class="form-control border-0 shadow-0 p-0" name="quantity" type="text" value="1">
                       <button class="inc-btn p-0"><i class="fas fa-caret-right"></i></button>
                     </div>
                   </div>
@@ -128,7 +132,7 @@
               </div><a class="text-dark p-0 mb-4 d-inline-block" href="#!" id="cart_btn"><i class="far fa-heart me-2"></i>Add to wish list</a><br>
               <ul class="list-unstyled small d-inline-block">
                 <li class="px-3 py-2 mb-1 bg-white"><strong class="text-uppercase">SKU:</strong><span class="ms-2 text-muted">039</span></li>
-                <li class="px-3 py-2 mb-1 bg-white text-muted"><strong class="text-uppercase text-dark">Category:</strong><a class="reset-anchor ms-2" href="#!">Demo Products</a></li>
+                <li class="px-3 py-2 mb-1 bg-white text-muted"><strong class="text-uppercase text-dark">Category:</strong><a class="reset-anchor ms-2" href="#!" th:text="${productVO.productCategoryVO.productCategoryName}">Demo Products</a></li>
                 <li class="px-3 py-2 mb-1 bg-white text-muted"><strong class="text-uppercase text-dark">Tags:</strong><a class="reset-anchor ms-2" href="#!">Innovation</a></li>
               </ul>
             </div>
@@ -142,13 +146,135 @@
             <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
               <div class="p-4 p-lg-5 bg-white">
                 <h6 class="text-uppercase">Product description </h6>
-                <p class="text-muted text-sm mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <p class="text-muted text-sm mb-0" th:text="${productVO.productDescribtion}">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
               </div>
             </div>
+
+<!--             商品評論內容 -->
             <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
               <div class="p-4 p-lg-5 bg-white">
                 <div class="row">
+                <!-- 檢查當前登入的會員是否已經評論過 -->
+				    <button th:if=${myComment==null} id="addCommentButton" class="btn btn-primary mb-3">新增評論</button>
+				    <button th:if="${myComment!=null}" id="updateCommentButton" class="btn btn-primary mb-3">修改評論</button>
+				    <button th:if="${myComment!=null}" id="deleteCommentButton" class="btn btn-primary mb-3">刪除評論</button>
+				    
+
+
+
+        		<!--             新增評論區 -->
+		<!-- <div class="container my-5"> -->
+		
+		<!--         新增評論的輸入區域 -->
+		        <div id="commentForm" class="mb-4">
+		            <form th:action="@{insertComment}" method="post">
+		                <div class="form-group mb-3">
+		                    <label for="nameInput">姓名</label>
+		                    <input th:if="${memberVO != null}" type="text" class="form-control" id="nameInput" th:value="${#session.getAttribute('memberVO').memberName}" readonly>
+		                </div>
+		                <div class="form-group mb-3">
+		                    <label for="ratingInput">評分</label>
+		                    <select class="form-control" id="ratingInput">
+		                        <option value="1">1 星</option>
+		                        <option value="2">2 星</option>
+		                        <option value="3">3 星</option>
+		                        <option value="4">4 星</option>
+		                        <option value="5">5 星</option>
+		                    </select>
+		                </div>
+		                <div class="form-group mb-3">
+		                    <label for="commentInput">評論</label>
+		                    <textarea class="form-control" id="commentInput" rows="3" placeholder="輸入您的評論"></textarea>
+		                </div>
+		                <button type="button" class="btn btn-secondary" id="cancelCommentButton">取消</button>
+		                <button type="button" class="btn btn-primary" id="submitCommentButton">確認</button>
+		            </form>
+		        </div>
+        		
                   <div class="col-lg-8">
+
+                  
+<!--                   迴圈拿評論 -->
+                  <th:block th:if="${memberVO != null}">
+                 <!--=========================== 自己評論在最上面 ===================================-->
+				 <th:block th:if="${myComment != null}">
+				 <div class="d-flex mb-3">
+				 <input id="productCommentId" type="hidden" th:value="${myComment.productCommentId}">
+                      <div class="flex-shrink-0"><img class="rounded-circle" th:src="@{/img/product/customer-1.png}" alt="" width="50"/></div>
+                      <div class="ms-3 flex-shrink-1">
+                        <h6 class="mb-0 text-uppercase"  th:text="${myComment.member.memberName}"></h6>
+                        <p class="small text-muted mb-0 text-uppercase"></p>
+                        <ul class="list-inline mb-1 text-xs" id="myStar">
+						 <th:block th:each="i : ${#numbers.sequence(1, myComment.star)}">
+						        <li class="list-inline-item m-0">
+						            <i class="fas fa-star text-warning"></i>
+						        </li>
+						  </th:block>
+                        </ul>
+<!-- =======================================點擊修改更改星星======================================== -->
+                        <div class="form-group mb-3 -none" id="myStarUpdate" th:attr="data-starCount=${myComment.star}">
+		                    <label for="ratingInput">評分</label>
+		                    <select class="form-control" id="modifyRatingInput">
+		                        <option value="1">1 星</option>
+		                        <option value="2">2 星</option>
+		                        <option value="3">3 星</option>
+		                        <option value="4">4 星</option>
+		                        <option value="5">5 星</option>
+		                    </select>
+		                </div>
+                        <p class="text-sm mb-0 text-muted" id="myComment" th:text="${myComment.productComment}"></p>
+<!--===============================點擊修改修改評論======================================== -->
+                        <div class="form-group mb-3 -none" id="myCommentUpdate">
+		                    <label for="commentInput">評論</label>
+		                    <textarea class="form-control" rows="3" id="commemtInput" th:text="${myComment.productComment}"></textarea>
+		                </div>
+                      </div>
+                    </div>
+				 </th:block>
+<!-- 					<input type="hidden" id="memberId" th:attr="data-memberId=${productCommentVO.member.memberId}"> -->
+<!--========================== 登入顯示除自己以外的============================= -->
+                   <th:block th:each="comment : ${otherComments}">
+                  <div class="d-flex mb-3">
+                      <div class="flex-shrink-0"><img class="rounded-circle" th:src="@{/img/product/customer-1.png}" alt="" width="50"/></div>
+                      <div class="ms-3 flex-shrink-1">
+                        <h6 class="mb-0 text-uppercase" th:text="${comment.member.memberName}"></h6>
+                        <p class="small text-muted mb-0 text-uppercase"></p>
+                        <ul class="list-inline mb-1 text-xs">
+						 <th:block th:each="i : ${#numbers.sequence(1, comment.star)}">
+						        <li class="list-inline-item m-0">
+						            <i class="fas fa-star text-warning"></i>
+						        </li>
+						  </th:block>
+                        </ul>
+                        
+                        <p class="text-sm mb-0 text-muted" th:text="${comment.productComment}"></p>
+                      </div>
+                    </div>
+                  </th:block>  
+                  </th:block>
+<!--=======================不登入顯示全部========================================================== -->
+                    <th:block th:if="${memberVO == null}">
+				    <th:block th:each="comment : ${allComments}">
+				        <div class="d-flex mb-3">
+				            <div class="flex-shrink-0">
+				                <img class="rounded-circle" th:src="@{/img/product/customer-1.png}" alt="" width="50"/>
+				            </div>
+				            <div class="ms-3 flex-shrink-1">
+				                <h6 class="mb-0 text-uppercase" th:text="${comment.member.memberName}"></h6>
+				                <p class="small text-muted mb-0 text-uppercase"></p>
+				                <ul class="list-inline mb-1 text-xs">
+				                    <th:block th:each="i : ${#numbers.sequence(1, comment.star)}">
+				                        <li class="list-inline-item m-0">
+				                            <i class="fas fa-star text-warning"></i>
+				                        </li>
+				                    </th:block>
+				                </ul>
+				                <p class="text-sm mb-0 text-muted" th:text="${comment.productComment}"></p>
+				            </div>
+				        </div>
+				    </th:block>
+				</th:block>
+<!--                   到這裡 -->
                     <div class="d-flex mb-3">
                       <div class="flex-shrink-0"><img class="rounded-circle" th:src="@{/img/product/customer-1.png}" alt="" width="50"/></div>
                       <div class="ms-3 flex-shrink-1">
@@ -188,9 +314,10 @@
           <h2 class="h5 text-uppercase mb-4">Related products</h2>
           <div class="row">
             <!-- PRODUCT-->
+            <th:block th:if="${limitedProductVOs != null}" th:each="item : ${limitedProductVOs}">
             <div class="col-lg-3 col-sm-6">
               <div class="product text-center skel-loader">
-                <div class="d-block mb-3 position-relative"><a class="d-block" href="detail.html"><img class="img-fluid w-100" th:src="@{/img/product/product-1.jpg}" alt="..."></a>
+                <div class="d-block mb-3 position-relative"><a class="d-block" href="detail.html"><img class="img-fluid w-100" th:src="@{/product/ShowProductPic} + '?productId=' + ${item.productId}" alt="..."></a>
                   <div class="product-overlay">
                     <ul class="mb-0 list-inline">
                       <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-outline-dark" href="#!"><i class="far fa-heart"></i></a></li>
@@ -199,26 +326,27 @@
                     </ul>
                   </div>
                 </div>
-                <h6> <a class="reset-anchor" href="detail.html">Kui Ye Chen’s AirPods</a></h6>
-                <p class="small text-muted">$250</p>
+                <h6> <a class="reset-anchor" href="detail.html" th:text="${item.productName}">Kui Ye Chen’s AirPods</a></h6>
+                <p class="small text-muted" th:text="${productPrice}">$250</p>
               </div>
             </div>
+            </th:block>
             <!-- PRODUCT-->
-            <div class="col-lg-3 col-sm-6">
-              <div class="product text-center skel-loader">
-                <div class="d-block mb-3 position-relative"><a class="d-block" href="detail.html"><img class="img-fluid w-100" src="img/product-2.jpg" alt="..."></a>
-                  <div class="product-overlay">
-                    <ul class="mb-0 list-inline">
-                      <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-outline-dark" href="#!"><i class="far fa-heart"></i></a></li>
-                      <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-dark" href="#!">Add to cart</a></li>
-                      <li class="list-inline-item mr-0"><a class="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i class="fas fa-expand"></i></a></li>
-                    </ul>
-                  </div>
-                </div>
-                <h6> <a class="reset-anchor" href="detail.html">Air Jordan 12 gym red</a></h6>
-                <p class="small text-muted">$300</p>
-              </div>
-            </div>
+<!--             <div class="col-lg-3 col-sm-6"> -->
+<!--               <div class="product text-center skel-loader"> -->
+<!--                 <div class="d-block mb-3 position-relative"><a class="d-block" href="detail.html"><img class="img-fluid w-100" src="img/product-2.jpg" alt="..."></a> -->
+<!--                   <div class="product-overlay"> -->
+<!--                     <ul class="mb-0 list-inline"> -->
+<!--                       <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-outline-dark" href="#!"><i class="far fa-heart"></i></a></li> -->
+<!--                       <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-dark" href="#!">Add to cart</a></li> -->
+<!--                       <li class="list-inline-item mr-0"><a class="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i class="fas fa-expand"></i></a></li> -->
+<!--                     </ul> -->
+<!--                   </div> -->
+<!--                 </div> -->
+<!--                 <h6> <a class="reset-anchor" href="detail.html">Air Jordan 12 gym red</a></h6> -->
+<!--                 <p class="small text-muted">$300</p> -->
+<!--               </div> -->
+<!--             </div> -->
           </div>
         </div>
       </section>
@@ -269,7 +397,7 @@
       
       <script>
       
-    
+      var session_acount="";
     $(document).ready(function () {
     	
     	
@@ -295,7 +423,7 @@
 //     			}
 //     		})
     	
-    	var session_acount="";
+    	
 //     	console.log("session_acount =" + session_acount);
         
         //查看session是否有存著account值
@@ -314,16 +442,17 @@
     
         
     jQuery(document).on("click", "#cart_btn", function addToCart() {
-    	
-    	
+
     	if ( session_acount!="" ) {
     		
     		var productId = $("input[class='addToCartId']").val(); // 商品ID
+    		var quantity = $("input[name='quantity']").val();
+//     		alert(quantity);
 // 			console.log(this);
 //     		console.log(productId);
             var cartItem = {
                 productId: productId,
-                quantity: 1,
+                quantity: quantity,
             };
             jQuery.ajax({
                 url: "/shopCart/addOneToCart",
@@ -389,5 +518,478 @@
     });
    });
 	</script>
+	
+<!-- 	商品評論新增 -->
+<script>
+        $(document).ready(function () {
+            // 顯示輸入評論的區域
+//             $('#addCommentButton').click(function () {
+            $(document).on("click", "#addCommentButton", function(){
+            	if ( session_acount=="" ){
+        	    	var location = "/product/listOneProduct2?productId="+$("input[class='addToCartId']").val();
+        	    	var dataToSend = { location: location };
+        	
+        	        //將欲前往頁面存入供跳轉
+        	        	$.ajax({
+        	                url: '/member/setLocation', // 替换成你的后端路由
+        	                type: 'POST',
+        	                contentType: 'application/json',
+        	                data: JSON.stringify(dataToSend),
+        	                success: function(response) {
+        	                    //確認是否儲存成功
+        	//                     console.log("Location setting success", response);
+        	                },
+        	                error: function(xhr, status, error) {
+        	                    console.error("Error:", error);
+        	                }
+        	            });
+        	    
+        				swal("請注意","您必須登入會員才能使用該功能，若您尚無會員請先進行註冊!","warning")
+        	            
+        				.then(function(){ 
+        	                window.location.href = '/member/memberLogin';
+        	            })
+        	    	}else{
+        	    		 $('#commentForm').slideDown();
+        	    	}
+               
+            });
+
+            // 取消評論
+            $('#cancelCommentButton').click(function () {
+                $('#commentForm').slideUp();
+                $('#nameInput').val('');
+                $('#ratingInput').val('5');
+                $('#commentInput').val('');
+            });
+
+            // 提交評論
+//             $('#submitCommentButton').click(function () {
+            
+            	
+//                 // 獲取輸入的數據
+//                 var name = $('#nameInput').val();
+//                 var rating = $('#ratingInput').val();
+//                 var comment = $('#commentInput').val();
+
+//                 // 檢查所有欄位是否已填寫
+//                 if (name && comment) {
+                	
+                	
+                	
+//                 	var stars='';
+                	
+//                 	for(let i=0; i < rating;i++){
+//                 		stars += `
+//                             <li class="list-inline-item m-0">
+//                                 <i class="fas fa-star text-warning"></i>
+//                             </li>
+//                         `;
+//                 	}
+                	
+//                     // 生成新的評論區塊
+//                     var newComment = `
+//                     	<div class="d-flex mb-3">
+//                         <div class="flex-shrink-0"><img class="rounded-circle" src="/img/product/customer-1.png" alt="" width="50"/></div>
+//                         <div class="ms-3 flex-shrink-1">
+//                           <h6 class="mb-0 text-uppercase">${name}</h6>
+//                           <p class="small text-muted mb-0 text-uppercase"></p>
+//                           <ul class="list-inline mb-1 text-xs">
+//                           	${stars}<!-- 根據 rating 動態生成星星 -->
+//                           </ul>
+//                           <div class="form-group mb-3 -none" id="myStarUpdate" data-starCount=${rating}">
+// 		                    <label for="ratingInput">評分</label>
+// 		                    <select class="form-control" id="modifyRatingInput">
+// 		                        <option value="1">1 星</option>
+// 		                        <option value="2">2 星</option>
+// 		                        <option value="3">3 星</option>
+// 		                        <option value="4">4 星</option>
+// 		                        <option value="5">5 星</option>
+// 		                    </select>
+// 		                </div>
+//                           <p class="text-sm mb-0 text-muted" id="myComment">${comment}</p>
+//                         <div class="form-group mb-3 -none" id="myCommentUpdate">
+// 		                    <label for="commentInput">評論</label>
+// 		                    <textarea class="form-control" rows="3" id="commemtInput">${comment}</textarea>
+// 		                </div>
+//                       </div>
+//                       </div>
+//                     `;
+
+//                     // 將新的評論添加到評論區的最上方
+//                    $('.col-lg-8').prepend($.parseHTML(newComment));
+//                     $('#commentForm').slideUp();  // 隱藏輸入表單
+
+//                     // 清空表單
+//                     $('#nameInput').val('');
+//                     $('#ratingInput').val('5');
+//                     $('#commentInput').val('');
+//                 } else {
+//                     alert('請填寫所有欄位');
+//                 }
+//             });
+//=============================================點擊修改評論按鈕======================================
+		// 獲取包含 star 數量的 data 屬性
+	    let starCount = $("#myStarUpdate").attr("data-starcount");  // 獲取 data-starCount 的值
+	
+	    // 根據 starCount 值設置選中的 option
+	    $("#modifyRatingInput").val(starCount);  // 設置 <select> 中選中的 option
+	    let selectedStarValue="";
+// 	    console.log( $("#modifyRatingInput"))
+	    $(document).on("change","#modifyRatingInput" , function() {
+	        selectedStarValue = $(this).val();  // 獲取選中的值
+	        alert("選擇的星數是: " + selectedStarValue);
+	    });
+	
+		$(document).on("click", "#updateCommentButton", function(e){
+			let starUpdate = $("#myStarUpdate");
+			let starUpdateValue = starUpdate.attr("data-starcount");
+			let myStar = $("#myStar");
+			let myComment = $("#myComment");
+			let updateComment = $("#myCommentUpdate");
+
+			
+			if($(this).attr("data-edit") == undefined){//按鈕點擊後會有兩個狀態
+				$(this).attr("data-edit", true);
+				//把原本的評論隱藏
+				myComment.toggleClass("-none");//原本的評論
+				updateComment.toggleClass("-none");
+				//出現可以修改的視窗修改評論
+				myStar.toggleClass("-none");
+				starUpdate.toggleClass("-none");
+			}else{//在點擊修改
+				let updateCommentValue = $("#commemtInput").val();
+				if(updateCommentValue == ""){
+					alert("請打入內容");
+				}else{
+					
+					let productComment = {
+				            productComment: $("#commemtInput").val(),
+				            star: parseInt($('#modifyRatingInput').val()),
+				            productId : parseInt($("input[class='addToCartId']").val()), // 僅需要傳遞 productId
+				            productCommemntId :　parseInt($("#productCommentId").val())
+				        };
+					
+					
+					$.ajax({
+						url:"/product/updateProductComment",
+						method:"post",
+						contentType:"application/json",
+						data:JSON.stringify(productComment),
+						dataType:"text",
+						success(response) {
+							var star='';
+							for(let i=0;i < selectedStarValue;i++){
+								star += `<li class="list-inline-item m-0">
+						                 <i class="fas fa-star text-warning"></i>
+							             </li>`;
+							}
+							
+							let html=`
+								<ul class="list-inline mb-1 text-xs" id="myStar">
+								        ${star}
+		                        </ul>`;
+							myStar.replaceWith(html)
+		                    myComment.text(updateCommentValue);
+							//把原本的評論隱藏
+							myComment.toggleClass("-none");//原本的評論
+							updateComment.toggleClass("-none");
+							//出現可以修改的視窗修改評論
+							myStar.toggleClass("-none");
+							starUpdate.toggleClass("-none");
+							$(this).removeAttr("data-edit");
+					      },
+					      error(xhr, status, error) {
+					        console.log(status);
+					        console.log(error);
+					      }
+						
+					})
+					
+// 					var star='';
+// 					for(let i=0;i < selectedStarValue;i++){
+// 						star += `<li class="list-inline-item m-0">
+// 				                 <i class="fas fa-star text-warning"></i>
+// 					             </li>`;
+// 					}
+					
+// 					let html=`
+// 						<ul class="list-inline mb-1 text-xs" id="myStar">
+// 						        ${star}
+//                         </ul>`;
+// 					myStar.replaceWith(html)
+//                     myComment.text(updateCommentValue);
+// 					//把原本的評論隱藏
+// 					myComment.toggleClass("-none");//原本的評論
+// 					updateComment.toggleClass("-none");
+// 					//出現可以修改的視窗修改評論
+// 					myStar.toggleClass("-none");
+// 					starUpdate.toggleClass("-none");
+// 					$(this).removeAttr("data-edit");
+// 					if(updateCommentValue != myComment && starUpdateValue != selectedStarValue){
+// 						updateCommentdata();
+// 					}
+				}
+			}
+			
+		});
+		//很像沒用
+		function updateCommentdata(){
+			
+			
+			let productComment = {
+		            productComment: $("#commemtInput").val(),
+		            star: parseInt($('#modifyRatingInput').val()),
+		            productId : parseInt($("input[class='addToCartId']").val()), // 僅需要傳遞 productId
+		            productCommemntId :　parseInt($("#productCommentId").val())
+		        };
+			
+			
+			$.ajax({
+				url:"/product/updateProductComment",
+				method:"post",
+				contentType:"application/json",
+				data:JSON.stringify(productComment),
+				dataType:"text",
+				success(response) {
+			        console.log(response);
+			      },
+			      error(xhr, status, error) {
+			        console.log(status);
+			        console.log(error);
+			      }
+				
+			})
+		}
+		
+//================================刪除商品評論===================================
+	let nameInputValue = $("#nameInput").val();
+	
+	$(document).on("click", "#deleteCommentButton", function(){
+		
+		
+		let productCommentId = parseInt($("#productCommentId").val());
+		
+        console.log(nameInputValue);
+
+		
+		//---------------------------------送出Ajax請求
+	    $.ajax({
+	      url:"/product/deleteProductComment",
+	      method:"post",
+	      contentType:"application/json",
+	      data:JSON.stringify(productCommentId),
+	      dataType:"text",
+	      success(response) {
+	        console.log(response);
+	        $("#reviews .row").first().prepend("<button id='addCommentButton' class='btn btn-primary mb-3'>新增評論</button>");
+            $("#deleteCommentButton").remove();
+            $("#updateCommentButton").remove();
+            $(".d-flex.mb-3")[0].remove();
+            
+            $("#nameInput").remove();
+//             $(".form-group.mb-3")[0].append(`<input type="text" class="form-control" id="nameInput" value=${$("#nameInput").val()} readonly>`);
+			let newMember = `<input type="text" class="form-control" id="nameInput" value=${nameInputValue} readonly>`;
+            $(".form-group.mb-3")[0].append($.parseHTML(newMember)[0]);
+            
+
+	      },
+	      
+	      error(xhr, status, error) {
+	        console.log(status);
+	        console.log(error);
+	      }
+
+	    });
+	});
+	
+        });
+    </script>
+<!--     商品新增評論確認是否先登入會員 -->
+    <script>
+// 	    $('#addCommentButton').click(function(){
+// 	    	if ( session_acount!="" ){
+// 	    	var location = "/product/listOneProduct2?productId="+$("input[class='addToCartId']").val();
+// 	    	var dataToSend = { location: location };
+	
+// 	        //將欲前往頁面存入供跳轉
+// 	        	$.ajax({
+// 	                url: '/member/setLocation', // 替换成你的后端路由
+// 	                type: 'POST',
+// 	                contentType: 'application/json',
+// 	                data: JSON.stringify(dataToSend),
+// 	                success: function(response) {
+// 	                    //確認是否儲存成功
+// 	//                     console.log("Location setting success", response);
+// 	                },
+// 	                error: function(xhr, status, error) {
+// 	                    console.error("Error:", error);
+// 	                }
+// 	            });
+	    
+// 				swal("請注意","您必須登入會員才能使用該功能，若您尚無會員請先進行註冊!","warning")
+	            
+// 				.then(function(){ 
+// 	                window.location.href = '/member/memberLogin';
+// 	            })
+// 	    	}
+// 	    });
+    
+    
+    $('#submitCommentButton').click(function () {
+    	
+    	
+//===========================================傳入商品評論資料庫=============================================
+    	if ( session_acount!="" ) {
+    		
+
+    		// 獲取輸入的數據
+            var name = $('#nameInput').val();
+            var rating = $('#ratingInput').val();
+            var comment = $('#commentInput').val();
+            
+
+            // 檢查所有欄位是否已填寫
+            if (name && comment) {
+            	
+            	let productComment = {
+                        productComment: $('#commentInput').val(),
+                        star : parseInt($("#ratingInput").val()),
+                        productId : parseInt($("input[class='addToCartId']").val()) // 僅需要傳遞 productId
+                    };
+            	
+            	$.ajax({
+                    url: '/product/addProductComment',
+                    type: 'POST',
+                    data: JSON.stringify(productComment),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        console.log('成功:', response);
+                        $("#addCommentButton").remove();
+                        $("#reviews .row").first().prepend("<button id='deleteCommentButton' class='btn btn-primary mb-3'>刪除評論</button>");
+                        $("#reviews .row").first().prepend(" <button id='updateCommentButton' class='btn btn-primary mb-3'>修改評論</button>");
+                  
+//                         $(".col-lg-8")[0].prepend("<input id='productCommentId' type='hidden' value="+ response +">")
+                        
+                        var stars='';
+                    	
+                    	for(let i=0; i < rating;i++){
+                    		stars += `
+                                <li class="list-inline-item m-0">
+                                    <i class="fas fa-star text-warning"></i>
+                                </li>
+                            `;
+                    	}
+                    	
+                        // 生成新的評論區塊
+                        var newComment = `
+                        	<div class="d-flex mb-3">
+                        	<input id="productCommentId" type="hidden" value=${response}>
+                            <div class="flex-shrink-0"><img class="rounded-circle" src="/img/product/customer-1.png" alt="" width="50"/></div>
+                            <div class="ms-3 flex-shrink-1">
+                              <h6 class="mb-0 text-uppercase">${name}</h6>
+                              <p class="small text-muted mb-0 text-uppercase"></p>
+                              <ul class="list-inline mb-1 text-xs" id="myStar">
+                              	${stars}<!-- 根據 rating 動態生成星星 -->
+                              </ul>
+                              <div class="form-group mb-3 -none" id="myStarUpdate" data-starCount=${rating}">
+        	                    <label for="ratingInput">評分</label>
+        	                    <select class="form-control" id="modifyRatingInput">
+        	                        <option value="1">1 星</option>
+        	                        <option value="2">2 星</option>
+        	                        <option value="3">3 星</option>
+        	                        <option value="4">4 星</option>
+        	                        <option value="5">5 星</option>
+        	                    </select>
+        	                </div>
+                              <p class="text-sm mb-0 text-muted" id="myComment">${comment}</p>
+                            <div class="form-group mb-3 -none" id="myCommentUpdate">
+        	                    <label for="commentInput">評論</label>
+        	                    <textarea class="form-control" rows="3" id="commemtInput">${comment}</textarea>
+        	                </div>
+                          </div>
+                          </div>
+                        `;
+
+                        // 將新的評論添加到評論區的最上方
+                       $('.col-lg-8').prepend($.parseHTML(newComment));
+                        $('#commentForm').slideUp();  // 隱藏輸入表單
+
+                        // 清空表單
+                        $('#nameInput').val('');
+                        $('#ratingInput').val('5');
+                        $('#commentInput').val('');
+
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('發送失敗:', error);
+                    }
+                });
+            	
+            	
+            	
+            	
+            } else {
+                alert('請填寫所有欄位');
+            }
+    		
+        
+		
+// 		chatgpt
+// 		let productComment = {
+//             productComment: $('#commentInput').val(),
+// //             star: parseInt($('#ratingInput').val()),
+//             star : parseInt($("#ratingInput").val()),
+//             productId : parseInt($("input[class='addToCartId']").val()) // 僅需要傳遞 productId
+//         };
+        
+
+//         $.ajax({
+//             url: '/product/addProductComment',
+//             type: 'POST',
+//             data: JSON.stringify(productComment),
+//             contentType: 'application/json',
+//             success: function(response) {
+//                 console.log('成功:', response);
+//                 $("#addCommentButton").remove();
+//                 $("#reviews .row").first().prepend(" <button id='updateCommentButton' class='btn btn-primary mb-3'>修改評論</button>");
+// //                 $(".col-lg-8")[0].prepend("<input id='productCommentId' type='hidden' value="+ response +">")
+//                 $(".col-lg-8")[0].prepend("<input id='productCommentId' type='hidden' value='" + response + "'>");
+
+//             },
+//             error: function(xhr, status, error) {
+//                 console.error('發送失敗:', error);
+//             }
+//         });
+    }else{//未登入
+    	var location = "/product/listOneProduct2?productId="+$("input[class='addToCartId']").val();
+    	var dataToSend = { location: location };
+
+        //將欲前往頁面存入供跳轉
+        	$.ajax({
+                url: '/member/setLocation', // 替换成你的后端路由
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(dataToSend),
+                success: function(response) {
+                    //確認是否儲存成功
+//                     console.log("Location setting success", response);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error);
+                }
+            });
+    
+			swal("請注意","您必須登入會員才能使用該功能，若您尚無會員請先進行註冊!","warning")
+            
+			.then(function(){ 
+                window.location.href = '/member/memberLogin';
+            })
+    }
+
+		
+		
+    });
+    </script>
       
        <div th:replace="~{/front_end/product/include_bottom}"></div>

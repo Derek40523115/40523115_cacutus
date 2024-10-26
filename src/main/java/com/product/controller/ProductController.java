@@ -1,13 +1,20 @@
 package com.product.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
@@ -29,9 +36,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.member.model.MemberVO;
 import com.product.model.*;
 import com.productcategory.model.ProductCategoryService;
 import com.productcategory.model.ProductCategoryVO;
+import com.productcomment.model.ProductCommentService;
+import com.productcomment.model.ProductCommentVO;
+import com.productphoto.model.ProductPhotoService;
+import com.productphoto.model.ProductPhotoVo;
 
 @Controller
 @RequestMapping("/product")//網頁網址式/product/addProduct才會出現
@@ -41,7 +53,13 @@ public class ProductController {
 	ProductService productSvc;
 	
 	@Autowired
+	ProductPhotoService productPhotoSvc;
+	
+	@Autowired
 	ProductCategoryService ProductCategorySvc;
+	
+	@Autowired
+	ProductCommentService productCommentSvc;
 	
 	@GetMapping("/listAllProductCategory")
 	public String listAllProductCategory(Model model) {
@@ -69,7 +87,7 @@ public class ProductController {
 	}
 
 
-	
+	//拿出所有商品
 	@ModelAttribute("productListData") // for select_page.jsp 第96 108行用 // for listAllEmp.jsp 第68行用//ChatGpt鍵是empListData，值是list
 		protected List<ProductVO> referenceListProductName(Model model) {
 //	   	model.addAttribute("productVO", new ProductVO());
@@ -118,42 +136,32 @@ public class ProductController {
 	
 	@PostMapping("insert")//對應到addEmp  56行 name名稱
 	public String insert(@Valid ProductVO productVO, BindingResult result, ModelMap model,
-			@RequestParam("productPhoto") MultipartFile[] parts) throws IOException {
-		
+			@RequestParam("productPhotoVos") MultipartFile[] parts) throws IOException {
+
 		/***************************1.接收請求參數 - 輸入格式的錯誤處理******************/
-		result = removeFieldError(productVO, result, "productPhoto");
+		result = removeFieldError(productVO, result, "productPhotoVos");
 		
 		if (parts[0].isEmpty()) { // 使用者未選擇要上傳的圖片時
 			System.out.println("上傳照片");
 			model.addAttribute("errorMessage", "商品照片: 請上傳照片");
 		} else {
-			System.out.println("圖片新增");
+//			System.out.println("圖片新增");
+			 Set<ProductPhotoVo> productPhotoVos = new HashSet<>(); // 用来存储ProductPhotoVo的集合
+//			 Set<ProductPhotoVo> productPhotoVos = new LinkedHashSet<>(); // 用来存储ProductPhotoVo的集合
 			for (MultipartFile multipartFile : parts) {
 				byte[] buf = multipartFile.getBytes();
-				productVO.setProductPhoto(buf);
+				// 创建ProductPhotoVo对象，设置图片数据
+	            ProductPhotoVo productPhotoVO = new ProductPhotoVo();
+	            productPhotoVO.setProductVO(productVO); // 关联到ProductVO
+	            productPhotoVO.setProductPhoto(buf); // 存储图片的字节数据
+	            productPhotoVos.add(productPhotoVO); // 添加到集合
 			}
+			productVO.setProductPhotoVos(productPhotoVos); // 将图片集合设置到ProductVO
 		}
+
+
 		
-//		 if (!productPhoto.isEmpty()) {
-//		        try {
-//		            // 讀取文件內容到字節數組
-//		            byte[] bytes = productPhoto.getBytes();
-//		            productVO.setProductPhoto(bytes);
-//		        } catch (IOException e) {
-//		            // 處理讀取文件時的錯誤
-//		            model.addAttribute("errorMessage", "讀取文件錯誤");
-//		            return "back-end/product/addProduct";
-//		        }
-//		    } else {
-//		        model.addAttribute("errorMessage", "商品照片: 請上傳照片");
-//		    }
-		
-//		if (result.hasErrors()) {
-//			System.out.println("有錯誤");
-//			return "back-end/product/addProduct";
-//		}
-		
-		if (result.hasErrors()) {
+		if (result.hasErrors() || parts[0].isEmpty()) {
 //		    System.out.println("驗證錯誤：");
 //		    for (FieldError error : result.getFieldErrors()) {
 //		        System.out.println(error.getField() + ": " + error.getDefaultMessage());
@@ -167,8 +175,8 @@ public class ProductController {
 		List<ProductVO> list = productSvc.getAll();
 		model.addAttribute("productListData", list);
 		model.addAttribute("success", "- (新增成功)");
-		System.out.println("成功新增");
-		return "back_end/product/listAllProduct"; // 新增成功後轉交listAllProduct.jsp
+//		System.out.println("成功新增");
+		return "redirect:/product/listAllProduct1";//轉交給getMapping第76行
 	}
 	
 	@PostMapping("insertCategory")
@@ -237,7 +245,7 @@ public class ProductController {
 		
 		/***************************3.查詢完成,準備轉交(Send the Success view)***********/
 		model.addAttribute("productVO", productVO);
-		model.addAttribute("getOne_For_Update", "true");
+//		model.addAttribute("getOne_For_Update", "true");
 		
 		return "back_end/product/update_product_input"; // 查詢完成後轉交update_product_input.jsp
 //		return "back-end/product/listAllProduct";
@@ -272,7 +280,7 @@ public class ProductController {
 		
 		/***************************3.查詢完成,準備轉交(Send the Success view)***********/
 		model.addAttribute("productVO", productVO);
-		model.addAttribute("getOnehistory_For_Update", "true");
+//		model.addAttribute("getOnehistory_For_Update", "true");
 		
 		return "back_end/product/update_product_input"; // 查詢完成後轉交update_product_input.jsp
 //		return "back-end/product/listAllProduct";
@@ -284,7 +292,9 @@ public class ProductController {
 	 */
 	@PostMapping("update")
 	public String update(@Valid ProductVO productVO, BindingResult result, ModelMap model,
-			@RequestParam("productPhoto") MultipartFile[] parts) throws IOException {
+			@RequestParam("productPhotos") MultipartFile[] parts,
+			@RequestParam("productPhotoIds") Integer[] productPhotoIds
+			) throws IOException {
 		 // 使用者未選擇要上傳的新圖時
 //		if(productVO.getProductPhoto().length==0) {
 //			// 去除BindingResult中upFiles欄位的FieldError紀錄 --> 見第151行
@@ -296,15 +306,61 @@ public class ProductController {
 ////		}
 		
 		result = removeFieldError(productVO, result, "productPhoto");
-        if (parts[0].isEmpty()) { // 使用者未選擇要上傳的新圖片時
-        	byte[] upFiles = productSvc.getOneProduct(productVO.getProductId()).getProductPhoto();
-        	productVO.setProductPhoto(upFiles);
-		} else {
-			for (MultipartFile multipartFile : parts) {
-				byte[] upFiles = multipartFile.getBytes();
-				productVO.setProductPhoto(upFiles);
-			}
-		}
+//        if (parts[0].isEmpty()) { // 使用者未選擇要上傳的新圖片時
+////        	byte[] upFiles = productSvc.getOneProduct(productVO.getProductId()).getProductPhoto();
+////        	productVO.setProductPhoto(upFiles);
+//		} else {
+////			for (MultipartFile multipartFile : parts) {
+////				byte[] upFiles = multipartFile.getBytes();
+//////				productVO.setProductPhoto(upFiles);
+////			}
+//			
+//			//貼上
+////			System.out.println("圖片新增");
+//			 Set<ProductPhotoVo> productPhotoVos = new HashSet<>(); // 用来存储ProductPhotoVo的集合
+////			 Set<ProductPhotoVo> productPhotoVos = new LinkedHashSet<>(); // 用来存储ProductPhotoVo的集合
+//			int i = 0;
+//			 for (MultipartFile multipartFile : parts) {
+//				byte[] buf = multipartFile.getBytes();
+//				// 创建ProductPhotoVo对象，设置图片数据
+//	            ProductPhotoVo productPhotoVO = new ProductPhotoVo();
+//	            
+//	            productPhotoVO.setProductPhotoId(null);
+//	            productPhotoVO.setProductVO(productVO); // 关联到ProductVO
+//	            productPhotoVO.setProductPhoto(buf); // 存储图片的字节数据
+//	            productPhotoVos.add(productPhotoVO); // 添加到集合
+//			}
+//			productVO.setProductPhotoVos(productPhotoVos); // 将图片集合设置到ProductVO
+//			
+//			
+//		}
+		
+		//chatgpt
+		Set<ProductPhotoVo> productPhotoVos = new HashSet<>();
+	    
+	    for (int i = 0; i < productPhotoIds.length; i++) {
+	        Integer productPhotoId = productPhotoIds[i];
+	        MultipartFile multipartFile = parts[i];
+	        
+	        ProductPhotoVo productPhotoVO = null;
+	        if (productPhotoId != null && multipartFile.isEmpty()) {
+	            // 圖片未修改，保留原有的 ProductPhotoVo
+	            productPhotoVO = productPhotoSvc.getOneProduct(productPhotoId); // 從數據庫獲取現有的圖片數據
+	        } else if(multipartFile != null && !multipartFile.isEmpty()) {
+	            // 圖片有更新
+	            productPhotoVO = new ProductPhotoVo();
+	            productPhotoVO.setProductPhotoId(productPhotoId); // 使用原 ID 更新
+	            productPhotoVO.setProductVO(productVO);
+	            productPhotoVO.setProductPhoto(multipartFile.getBytes()); // 更新圖片數據
+	        } 
+	        else {
+//	            continue; // 跳過無效情況
+	        	System.out.println("有錯誤");
+	        }
+	        productPhotoVos.add(productPhotoVO);
+	    }
+	    productVO.setProductPhotoVos(productPhotoVos); // 設定圖片集合到 ProductVO
+		//到這
 
 		/***************************1.接收請求參數 - 輸入格式的錯誤處理******************/
 		if (result.hasErrors()) {
@@ -315,7 +371,7 @@ public class ProductController {
 //		ProductService productSvc = new ProductService();
 		if(productVO.getProductStatus() == false) {
 			model.addAttribute("updatehistroy", "true");
-			System.out.println("有到這裡");
+//			System.out.println("有到這裡");
 		}
 			
 		productSvc.updateProduct(productVO);
@@ -479,13 +535,79 @@ public class ProductController {
 					List<ProductCategoryVO> list2 = ProductCategorySvc.getAll();
 					model.addAttribute("productCategoryList", list2);
 					
+					Map<Integer,Integer> productFirstPhotoId = new HashMap<>();
+					Iterator<ProductVO> iterProduct = list1.iterator();
+					while(iterProduct.hasNext()) {
+						ProductVO perProduct = iterProduct.next();//抓陣列裡單個產品的資料
+						
+						Set<ProductPhotoVo> productPhotoVos = perProduct.getProductPhotoVos();
+						if(productPhotoVos!=null && !productPhotoVos.isEmpty()) {
+							ProductPhotoVo firstPhotoId = productPhotoVos.iterator().next();
+							productFirstPhotoId.put(perProduct.getProductId(), firstPhotoId.getProductPhotoId());
+						}
+					}
+
+					
+					model.addAttribute("productFirstPhotoId", productFirstPhotoId);
 					return "/front_end/product/shop" ;
 				}
 				
 				@GetMapping("/listOneProduct2")
-				public String listOneProduct2(@RequestParam("productId") String productId, ModelMap model) {
+				public String listOneProduct2(@RequestParam("productId") String productId, ModelMap model, HttpSession session) {
 					ProductVO productVO = productSvc.findById( Integer.valueOf(productId) );
+					//抓多張圖片的ID
+					Set<ProductPhotoVo> productPhotoVos = productVO.getProductPhotoVos();
+					Set<Integer> productPhotoId = new LinkedHashSet();
+					for(ProductPhotoVo productPhotoVo : productPhotoVos) {
+						productPhotoId.add(productPhotoVo.getProductPhotoId());
+					}
+					model.addAttribute("productPhotoId", productPhotoId);
 					model.addAttribute("productVO", productVO);
+					
+					//從相同商品類別裡找多種商品
+					Integer productCategoryId = productVO.getProductCategoryVO().getProductCategoryId();
+					ProductCategoryVO productCategoryVO = ProductCategorySvc.getOneProductCategory(productCategoryId);
+					Set<ProductVO> productVOs = productCategoryVO.getProductVOs();
+
+					// 使用 Stream 限制 Set 中的元素數量為前四個
+					Set<ProductVO> limitedProductVOs = productVOs.stream().limit(4).collect(Collectors.toSet());
+
+					System.out.println("限制後的商品集合: " + limitedProductVOs);
+					model.addAttribute("limitedProductVOs", limitedProductVOs);
+
+					
+					
+					//商品評論
+					List<ProductCommentVO> productCommentVO = productCommentSvc.getProductIdAll(productId);
+//					model.addAttribute("productCommentVO", productCommentVO);
+//					System.out.println("測試檔案 = " +productCommentVO);
+					
+					//會員
+					MemberVO memberVO = (MemberVO)session.getAttribute("memberVO");
+					model.addAttribute("memberVO", memberVO);
+					if(memberVO != null) {//登入會員
+					
+						  // 當前用戶已登入，提取出用戶自己的評論
+					    List<ProductCommentVO> otherComments = productCommentVO.stream()
+					        .filter(comment -> !comment.getMember().getMemberId().equals(memberVO.getMemberId()))
+					        .collect(Collectors.toList());
+
+					    // 找出用戶自己的評論
+					    ProductCommentVO myComment = productCommentVO.stream()
+					        .filter(comment -> comment.getMember().getMemberId().equals(memberVO.getMemberId()))
+					        .findFirst().orElse(null);
+					    
+					    // 將用戶自己的評論和其他評論分別傳遞到前端
+					    model.addAttribute("myComment", myComment);
+					    model.addAttribute("otherComments", otherComments);
+
+							
+					}else {
+						// 用戶未登入，傳遞所有評論
+					    model.addAttribute("allComments", productCommentVO);
+					}
+					
+					
 					return "/front_end/product/detail";
 				}
 		

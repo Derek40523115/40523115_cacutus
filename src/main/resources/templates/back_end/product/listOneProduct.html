@@ -30,7 +30,10 @@
                 <p class="card-text"><strong>商品價格:</strong> <span th:text="${productVO.productPrice}"></span></p>
                 <p class="card-text"><strong>商品名稱:</strong> <span th:text="${productVO.productName}"></span></p>
                 <p class="card-text"><strong>商品狀態:</strong> <span th:text="${productVO.productStatus}"></span></p>
-                <p class="card-text"><strong>商品圖片:</strong> <img th:src="@{/product/DBGifReader} + '?productId=' + ${productVO.productId}" class="img-fluid" width="100px"></p>
+                <p class="card-text"><strong>商品圖片:</strong> 
+                <th:block th:each="productPhoto : ${productVO.productPhotoVos}">
+                <img th:src="@{/product/ShowProductPic} + '?productId=' + ${productVO.productId} + '&productPhotoId=' + ${productPhoto.productPhotoId}" class="img-fluid" width="100px"></p>
+                </th:block>
             </div>
         </div>
         

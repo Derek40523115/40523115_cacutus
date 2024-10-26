@@ -44,7 +44,43 @@
 				<td th:text="${productVO.productPrice}"></td>
 				<td th:text="${productVO.productName}"></td>
 				<td th:if="${productVO.productStatus}">上架</td>
-				<td><img th:src="@{/product/DBGifReader} + '?productId=' + ${productVO.productId}" width="100px"></td>
+<!-- 				<td><img th:src="@{/product/DBGifReader} + '?productId=' + ${productVO.productId}" width="100px"></td> -->
+				<!-- bootstrap彈窗 -->
+				<!-- Button trigger modal -->
+				<td>
+<!-- 				<button type="button" class="btn btn-primary" data-bs-toggle="modal" th:attr="'data-bs-target=#exampleModal_' + ${productVO.productId}"> -->
+				<button type="button" class="btn btn-primary" data-bs-toggle="modal" th:attr="data-bs-target='#exampleModal_' + ${productVO.productId}">
+				  圖片
+				</button>
+				</td>
+				
+				<!-- Modal -->
+				<div class="modal fade" th:id="'exampleModal_'+${productVO.productId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				  <div class="modal-dialog">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLabel">圖片</h5>
+				        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				      </div>
+				      <div class="modal-body">
+				        <th:block th:if="${productVO.productPhotoVos}">
+				        	<div th:each="productPhoto : ${productVO.productPhotoVos}">
+<!-- 				        	<p th:text="${productPhoto.productPhotoId}"></p> -->
+				        		<img class="picture" th:src="@{/product/ShowProductPic(productId=${productVO.productId}, productPhotoId=${productPhoto.productPhotoId})}" width="300" height="300">
+				        	</div>
+				        </th:block>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				        <button type="button" class="btn btn-primary">Save changes</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+				<!-- 這裡結束 -->
+
+
+
 			<td>
 			  <form method="post" th:action="@{/product/getOne_For_Update}" style="margin-bottom: 0px;">
 			     <input type="submit" value="修改">

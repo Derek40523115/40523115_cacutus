@@ -1,35 +1,38 @@
 <div th:replace="~{/front_end/product/include_top}"></div>
   <body>
+  
+  <div th:replace="~{/front_end/product/include_body}"></div>
+  
     <div class="page-holder">
       <!-- navbar-->
-      <header class="header bg-white">
-        <div class="container px-lg-3">
-          <nav class="navbar navbar-expand-lg navbar-light py-3 px-lg-0"><a class="navbar-brand" href="index.html"><span class="fw-bold text-uppercase text-dark">Boutique</span></a>
-            <button class="navbar-toggler navbar-toggler-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                  <!-- Link--><a class="nav-link" href="index.html">Home</a>
-                </li>
-                <li class="nav-item">
-                  <!-- Link--><a class="nav-link" href="shop.html">Shop</a>
-                </li>
-                <li class="nav-item">
-                  <!-- Link--><a class="nav-link" href="detail.html">Product detail</a>
-                </li>
-                <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
-                  <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown"><a class="dropdown-item border-0 transition-link" href="index.html">Homepage</a><a class="dropdown-item border-0 transition-link" href="shop.html">Category</a><a class="dropdown-item border-0 transition-link" href="detail.html">Product detail</a><a class="dropdown-item border-0 transition-link" href="cart.html">Shopping cart</a><a class="dropdown-item border-0 transition-link" href="checkout.html">Checkout</a></div>
-                </li>
-              </ul>
-              <ul class="navbar-nav ms-auto">               
-                <li class="nav-item"><a class="nav-link" href="cart.html"> <i class="fas fa-dolly-flatbed me-1 text-gray"></i>Cart<small class="text-gray fw-normal">(2)</small></a></li>
-                <li class="nav-item"><a class="nav-link" href="#!"> <i class="far fa-heart me-1"></i><small class="text-gray fw-normal"> (0)</small></a></li>
-                <li class="nav-item"><a class="nav-link" href="#!"> <i class="fas fa-user me-1 text-gray fw-normal"></i>Login</a></li>
-              </ul>
-            </div>
-          </nav>
-        </div>
-      </header>
+<!--       <header class="header bg-white"> -->
+<!--         <div class="container px-lg-3"> -->
+<!--           <nav class="navbar navbar-expand-lg navbar-light py-3 px-lg-0"><a class="navbar-brand" href="index.html"><span class="fw-bold text-uppercase text-dark">Boutique</span></a> -->
+<!--             <button class="navbar-toggler navbar-toggler-end" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button> -->
+<!--             <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
+<!--               <ul class="navbar-nav me-auto"> -->
+<!--                 <li class="nav-item"> -->
+<!--                   Link<a class="nav-link" href="index.html">Home</a> -->
+<!--                 </li> -->
+<!--                 <li class="nav-item"> -->
+<!--                   Link<a class="nav-link" href="shop.html">Shop</a> -->
+<!--                 </li> -->
+<!--                 <li class="nav-item"> -->
+<!--                   Link<a class="nav-link" href="detail.html">Product detail</a> -->
+<!--                 </li> -->
+<!--                 <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a> -->
+<!--                   <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown"><a class="dropdown-item border-0 transition-link" href="index.html">Homepage</a><a class="dropdown-item border-0 transition-link" href="shop.html">Category</a><a class="dropdown-item border-0 transition-link" href="detail.html">Product detail</a><a class="dropdown-item border-0 transition-link" href="cart.html">Shopping cart</a><a class="dropdown-item border-0 transition-link" href="checkout.html">Checkout</a></div> -->
+<!--                 </li> -->
+<!--               </ul> -->
+<!--               <ul class="navbar-nav ms-auto">                -->
+<!--                 <li class="nav-item"><a class="nav-link" href="cart.html"> <i class="fas fa-dolly-flatbed me-1 text-gray"></i>Cart<small class="text-gray fw-normal">(2)</small></a></li> -->
+<!--                 <li class="nav-item"><a class="nav-link" href="#!"> <i class="far fa-heart me-1"></i><small class="text-gray fw-normal"> (0)</small></a></li> -->
+<!--                 <li class="nav-item"><a class="nav-link" href="#!"> <i class="fas fa-user me-1 text-gray fw-normal"></i>Login</a></li> -->
+<!--               </ul> -->
+<!--             </div> -->
+<!--           </nav> -->
+<!--         </div> -->
+<!--       </header> -->
       <!--  Modal -->
       <div class="modal fade" id="productView" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -70,6 +73,7 @@
         </div>
       </div>
       <div class="container">
+      <form action="/shopCart/CartToCheckout2" method="post">
         <!-- HERO SECTION-->
         <section class="py-5 bg-light">
           <div class="container">
@@ -105,52 +109,35 @@
                     </tr>
                   </thead>
                   <tbody class="border-0">
+                  <th:block th:if="${cartVO != null}" th:each="cartVO : ${cartVO}">
                     <tr>
+                    <input class="productId"  type="hidden" th:value="${cartVO.productId}">
                       <th class="ps-0 py-3 border-light" scope="row">
-                        <div class="d-flex align-items-center"><a class="reset-anchor d-block animsition-link" href="detail.html"><img src="img/product-detail-3.jpg" alt="..." width="70"/></a>
-                          <div class="ms-3"><strong class="h6"><a class="reset-anchor animsition-link" href="detail.html">Red digital smartwatch</a></strong></div>
+                        <div class="d-flex align-items-center">
+                        <a class="reset-anchor d-block animsition-link" href="detail.html"><img th:src="@{/product/ShowProductPic} + '?productId=' + ${cartVO.productId} + '&productPhotoId=' + ${productFirstPhotoId[cartVO.productId]}" alt="..." width="70"/></a>
+                          <div class="ms-3"><strong class="h6"><a class="reset-anchor animsition-link" name="productName" href="detail.html" th:text="${cartVO.productName}">Red digital smartwatch</a></strong></div>
+                          <input type="hidden" name="productName" th:value="${cartVO.productName}">
                         </div>
                       </th>
                       <td class="p-3 align-middle border-light">
-                        <p class="mb-0 small">$250</p>
+                        <p class="mb-0 small" th:text="'$'+${cartVO.price}">$250</p>
                       </td>
                       <td class="p-3 align-middle border-light">
                         <div class="border d-flex align-items-center justify-content-between px-3"><span class="small text-uppercase text-gray headings-font-family">Quantity</span>
                           <div class="quantity">
-                            <button class="dec-btn p-0"><i class="fas fa-caret-left"></i></button>
-                            <input class="form-control form-control-sm border-0 shadow-0 p-0" type="text" value="1"/>
-                            <button class="inc-btn p-0"><i class="fas fa-caret-right"></i></button>
+                            <button type="button" class="dec-btn p-0"><i class="fas fa-caret-left"></i></button>
+                            <input class="form-control form-control-sm border-0 shadow-0 p-0 quantityInput" type="text" th:value="${cartVO.quantity}"/>
+                            <button type="button" class="inc-btn p-0"><i class="fas fa-caret-right"></i></button>
                           </div>
                         </div>
                       </td>
                       <td class="p-3 align-middle border-light">
-                        <p class="mb-0 small">$250</p>
+                        <p class="mb-0 small" name="productTotalPrice" th:text="'$'+${cartVO.quantity * cartVO.price}">$250</p>
+                        <input type="hidden" name="productTotalValue" th:value="${cartVO.quantity * cartVO.price}">
                       </td>
-                      <td class="p-3 align-middle border-light"><a class="reset-anchor" href="#!"><i class="fas fa-trash-alt small text-muted"></i></a></td>
+                      <td class="p-3 align-middle border-light"><a class="reset-anchor remove-button" name="remove-button" href="#!"><i class="fas fa-trash-alt small text-muted" th:attr="data-product-id=${cartVO.productId}"></i></a></td>
                     </tr>
-                    <tr>
-                      <th class="ps-0 py-3 border-0" scope="row">
-                        <div class="d-flex align-items-center"><a class="reset-anchor d-block animsition-link" href="detail.html"><img src="img/product-detail-2.jpg" alt="..." width="70"/></a>
-                          <div class="ms-3"><strong class="h6"><a class="reset-anchor animsition-link" href="detail.html">Apple watch</a></strong></div>
-                        </div>
-                      </th>
-                      <td class="p-3 align-middle border-0">
-                        <p class="mb-0 small">$250</p>
-                      </td>
-                      <td class="p-3 align-middle border-0">
-                        <div class="border d-flex align-items-center justify-content-between px-3"><span class="small text-uppercase text-gray headings-font-family">Quantity</span>
-                          <div class="quantity">
-                            <button class="dec-btn p-0"><i class="fas fa-caret-left"></i></button>
-                            <input class="form-control form-control-sm border-0 shadow-0 p-0" type="text" value="1"/>
-                            <button class="inc-btn p-0"><i class="fas fa-caret-right"></i></button>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="p-3 align-middle border-0">
-                        <p class="mb-0 small">$250</p>
-                      </td>
-                      <td class="p-3 align-middle border-0"><a class="reset-anchor" href="#!"><i class="fas fa-trash-alt small text-muted"></i></a></td>
-                    </tr>
+                    </th:block>
                   </tbody>
                 </table>
               </div>
@@ -158,7 +145,7 @@
               <div class="bg-light px-4 py-3">
                 <div class="row align-items-center text-center">
                   <div class="col-md-6 mb-3 mb-md-0 text-md-start"><a class="btn btn-link p-0 text-dark btn-sm" href="shop.html"><i class="fas fa-long-arrow-alt-left me-2"> </i>Continue shopping</a></div>
-                  <div class="col-md-6 text-md-end"><a class="btn btn-outline-dark btn-sm" href="checkout.html">Procceed to checkout<i class="fas fa-long-arrow-alt-right ms-2"></i></a></div>
+                  <div class="col-md-6 text-md-end"><button type="submit" class="btn btn-outline-dark btn-sm">Procceed to checkout<i class="fas fa-long-arrow-alt-right ms-2"></i></button></div>
                 </div>
               </div>
             </div>
@@ -168,14 +155,18 @@
                 <div class="card-body">
                   <h5 class="text-uppercase mb-4">Cart total</h5>
                   <ul class="list-unstyled mb-0">
-                    <li class="d-flex align-items-center justify-content-between"><strong class="text-uppercase small font-weight-bold">Subtotal</strong><span class="text-muted small">$250</span></li>
+                    <li class="d-flex align-items-center justify-content-between"><strong class="text-uppercase small font-weight-bold">Discount</strong><span class="text-muted small" id="discount-amount">$250</span><input type="hidden"  name="discount-amount"></li>
                     <li class="border-bottom my-2"></li>
-                    <li class="d-flex align-items-center justify-content-between mb-4"><strong class="text-uppercase small font-weight-bold">Total</strong><span>$250</span></li>
+                    <li class="d-flex align-items-center justify-content-between mb-4"><strong class="text-uppercase small font-weight-bold">Total</strong><span id="totalCount">$250</span><input type="hidden" name="totalCount" value="250"></li>
                     <li>
                       <form action="#">
                         <div class="input-group mb-0">
-                          <input class="form-control" type="text" placeholder="Enter your coupon">
-                          <button class="btn btn-dark btn-sm w-100" type="submit"> <i class="fas fa-gift me-2"></i>Apply coupon</button>
+<!--                           <input class="form-control" type="text" placeholder="Enter your coupon"> -->
+<!--                           <button class="btn btn-dark btn-sm w-100" type="submit"> <i class="fas fa-gift me-2"></i>Apply coupon</button> -->
+                        <select class="form-control" name="productPromotion" id="productPromotion">
+							<option value="0">請選擇活動優惠</option>
+							<option th:each="item : ${shopProductDiscount}" th:value="${item.promotionCoupon}" th:text="${item.promotionTitle}"/>
+						</select>
                         </div>
                       </form>
                     </li>
@@ -186,6 +177,7 @@
           </div>
         </section>
       </div>
+      </form>
       <footer class="bg-dark text-white">
         <div class="container py-4">
           <div class="row py-5">
@@ -230,4 +222,270 @@
         </div>
       </footer>
         <script src="https://code.jquery.com/jquery-3.5.1.js"></script> 
+        
+        <script>
+//=============================購物車總價===============================
+	$(document).ready(function(){
+		
+		
+		
+// 		const productTotalPrice = $("[name='productTotalPrice']");//每個商品的總價
+// // 		console.log(productTotalPrice);
+// 		let cartTotal = 0;
+// 		$.each(productTotalPrice, function(index, item){
+// 			let priceWithoutDollar = $(item).text().replace("$","");
+// 			cartTotal += parseFloat(priceWithoutDollar);
+// 		})
+// // 		console.log(cartTotal);
+// 		$("#totalCount").text("$"+cartTotal);
+		
+//================================選折價更改價格=================================
+		
+
+// 		console.log($("#totalCount"));
+		const discountAmount = $("#discount-amount");//商品折數
+		
+		var promotion = "0";//套用到切換商品數量折扣判斷
+		
+		$("#productPromotion").on("change", function(){
+			promotion = parseFloat(this.value || "0");
+			// 如果活動折扣是 0，直接顯示總金額；否則，應用折扣
+	        if (promotion === 0) {
+	        	$("#totalCount").text('$' + cartTotal);
+	        	$("[name='totalCount']").val(cartTotal);//給input放入總價，給後端做數據傳輸使用
+	            discountAmount.html("");
+	        } else {
+	        	$("#totalCount").text('$' + Math.round(cartTotal * promotion));
+	        	$("[name='totalCount']").val(Math.round(cartTotal * promotion));//給input放入總價，給後端做數據傳輸使用
+	        }
+	        
+	        if(promotion *10 % 1 == 0 && promotion!=0){
+	        	discountAmount.html(promotion*10 + "折");
+	        	$("input[name='discount-amount']").val(promotion*10 + "折");
+	        }
+	        else{
+	        	discountAmount.html(Math.round(promotion*100) + "折");
+	        	$("input[name='discount-amount']").val(Math.round(promotion*100) + "折");
+	        }
+	        	 
+	        	
+// 	         console.log(productPromotion.value*100);
+		})
+
+//===========================切換數量更改價格====================================
+// 		function quantityFunction(e){
+// 			console.log(e.target.value);
+// 			alert(e.target.value);
+// 		}
+		
+		 
+		// 當點擊增加按鈕
+	    $(".inc-btn").click(function(e){
+	    	let quantityInput = $(this).siblings("input");  // 找到相鄰的 input 框
+	        let currentValue = parseInt(quantityInput.val()) || 1;  // 確保值為數字，默認為1
+// 	        quantityInput.val(currentValue + 1);  // 增加1
+	    	const itemRow =$(this).closest("tr");
+	    	updateItemTotal(itemRow);  // 更新價格
+	    	updateCartTotal();
+	    	
+	    	//Redis變更
+	    	const productId = itemRow.find('.productId').val();
+// 	    	console.log(productId);
+            const quantity = parseInt(quantityInput.val());
+// 	    	console.log(quantity);
+            updateRedisCart(productId, quantity);
+	    });
+
+	    // 當點擊減少按鈕
+	    $(".dec-btn").click(function(){
+	    	const itemRow =$(this).closest("tr");
+	    	
+	        let quantityInput = $(this).siblings("input");  // 找到相鄰的 input 框
+	        let currentValue = parseInt(quantityInput.val()) || 1;  // 確保值為數字，默認為1
+// 	        if (currentValue > 1) {  // 防止數量小於1
+// 	            quantityInput.val(currentValue - 1);  // 減少1
+	            updateItemTotal(itemRow);  // 更新價格
+	    		updateCartTotal();
+	            
+	    		//Redis變更
+		    	const productId = itemRow.find('.productId').val();//找ID
+// 		    	console.log(productId);
+	            const quantity = parseInt(quantityInput.val());//找輸入內容
+// 		    	console.log(quantity);
+	            updateRedisCart(productId, quantity);  
+// 	        }
+	    });
+
+	    // 當直接更改輸入框中的數量
+	    $(".quantityInput").on("input", function() {
+	        let currentValue = parseInt($(this).val()) || 1;  // 確保值為數字，默認為1
+	        $(this).val(currentValue);  // 確保不輸入非法字符
+	        const itemRow =$(this).closest("tr");
+	        updateItemTotal(itemRow);  // 更新價格
+	        updateCartTotal();
+	        
+	      //Redis變更
+	    	const productId = itemRow.find('.productId').val();//找ID
+// 		    	console.log(productId);
+            const quantity = parseInt(currentValue);//找輸入內容
+// 		    	console.log(quantity);
+            updateRedisCart(productId, quantity);  
+	    });
+
+	    // 更新單項商品總價
+	    function updateItemTotal(itemRow) {
+	    	const quantityInput = itemRow.find('input[type="text"]'); // 使用 jQuery 的 find 方法
+	        const itemTotalElement = itemRow.find('p[name="productTotalPrice"]');
+	        const itemPriceElement = itemRow.find('.mb-0.small').first();
+	        const quantity = parseInt(quantityInput.val()); // 使用 jQuery 的 val 方法獲取值
+// 	         console.log(quantity);
+	        const itemPrice = parseInt(itemPriceElement.text().replace("$",""));
+// 	         console.log(itemPrice);
+	        const itemTotal = quantity * itemPrice;
+// 	        console.log(itemTotal);
+	        itemTotalElement.text('$' + itemTotal);
+	    }
+	    
+	    let cartTotal = 0;//折扣要用的
+	    
+	    updateCartTotal();//剛進來要執行一次抓購物車總價
+
+	    // 更新整個購物車的總價格
+	    function updateCartTotal() {
+	    	cartTotal = 0;
+	        $('p[name="productTotalPrice"]').each(function() {
+	            let price = parseFloat($(this).text().replace("$", "")) || 0;
+	            console.log(price);
+	            cartTotal += price;
+	        });
+// 	        $("#totalCount").text("$" + Math.round(cartTotal));  // 更新總金額顯示
+	        
+	        if (promotion == 0) {
+	        	$("#totalCount").text('$' + cartTotal);
+	        	$("[name='totalCount']").val(cartTotal);//給input放入總價，給後端做數據傳輸使用
+// 	        	console.log(cartTotal);
+// 	        	alert($("[name='totalCount']").val())
+	            discountAmount.html("");
+	        } else {
+	        	$("#totalCount").text('$' + Math.round(cartTotal * promotion));
+	        	$(".totalCount").val(Math.round(cartTotal * promotion));
+	        	$("[name='totalCount']").val(Math.round(cartTotal * promotion));
+// 	        	console.log(cartTotal);
+// 	        	alert($("[name='totalCount']").val());
+	        }
+	        console.log(cartTotal);
+	        
+	    }
+//===============Redis更新購物車資料=============================
+	    function updateRedisCart(productId, quantity) {
+	        const cartItem = {
+	            productId: productId,
+	            quantity: quantity,
+	        };
+
+	        $.ajax({
+	            url: '/shopCart/upDateCart',
+	            type: 'POST',
+	            contentType: "application/json",
+	            data: JSON.stringify(cartItem),
+	            success: function (response) {
+//	                 console.log(response);
+	            },
+	            error: function (xhr, status, error) {
+	                console.error(error);
+	            }
+	        });
+	    }
+//==========================刪除商品============================
+	
+	
+	// 移除商品
+    function removeItem(event) {
+    	
+    	swal({
+  		  text:"確定移除商品嗎?",
+  		  icon: "warning",
+  		  buttons: {
+			      cancel: {
+			        text: "取消",
+			        visible: true
+			      },
+			      confirm: {
+			        text: "確認",
+			        visible: true
+			      }
+			    }
+  		}).then(function(confirm){
+  			if(confirm){
+  				const currentItem = event.target.closest('tr');
+//              console.log(event.target.attributes[1].value)
+             currentItem.remove();
+//              console.log("remove")
+             updateCartTotal();
+//              console.log("update total price")
+             const productId = Number(event.target.getAttribute("data-product-id"));
+//              console.log(event.target.getAttribute("data-product-id"));
+//              console.log("productID="+productId);
+             removeRedisCart(productId);
+  			}else{
+  				console.log("NO");
+  			}
+  		})
+    	
+    }
+//     console.log($(".remove-button"));
+    
+    $(".remove-button").on("click", function(event) {
+        removeItem(event);
+    });
+    
+    
+    
+    function removeRedisCart(productId) {
+//      console.log("call ajax");
+     $.ajax({
+         url: '/shopCart/removeOneCartItem',
+         type: 'POST',
+         contentType: "application/json",
+         data: JSON.stringify({productId: productId}),
+         success: function (response) {
+//              console.log(response);
+			//=============================================================//
+ 	        	//抓購物車裡的數量
+ 	        	$.ajax({
+ 	                url: '/shopCart/cartTotalNumber', 
+ 	                type: 'GET',
+ 	                success: function(response) {   
+//  	                    console.log("shopNumber"+response);
+ 	                    $("span.cartnumber").text(response);
+ 	                    if(response == "0"){
+ 	                    	$("span.cartnumber").addClass("-cartnone")
+ 	                    }else{
+ 	                    	$("span.cartnumber").removeClass("-cartnone")
+ 	                    }
+ 	                },
+ 	                error: function(xhr, status, error) {
+ 	                    console.error("Error:", error);
+ 	                }
+ 	            });
+ 	    //=============================================================//
+         },
+         error: function (xhr, status, error) {
+             console.error(error);
+         }
+     });
+ }
+    
+	
+		
+	})
+	
+	
+	
+
+	
+
+		
+
+        </script>
        <div th:replace="~{/front_end/product/include_bottom}"></div>

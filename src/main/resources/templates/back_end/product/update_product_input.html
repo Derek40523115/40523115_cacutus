@@ -75,12 +75,51 @@
         </div>
 
         <!-- 照片上传 -->
-        <div class="mb-3">
-            <label for="productPhoto" class="form-label">照片:</label>
-            <input type="file" class="form-control" id="productPhoto" th:field="*{productPhoto}" onclick="previewImage()" multiple="multiple">
-<!--             <span class="error" th:utext="${errorMessage}" id="productPhoto.errors">${errorMessage}</span> -->
-            <div id="blob_holder" class="mt-2"><img th:src="@{/product/DBGifReader} + '?productId=' + ${productVO.productId}" width="100px"></div>
-        </div>
+<!--         <div class="mb-3"> -->
+<!--             <label for="productPhoto" class="form-label">照片:</label> -->
+<!--             <input type="file" class="form-control" id="productPhoto" th:field="*{productPhoto}" onclick="previewImage()" multiple="multiple"> -->
+<!-- <!--             <span class="error" th:utext="${errorMessage}" id="productPhoto.errors">${errorMessage}</span> --> 
+<!--             <div id="blob_holder" class="mt-2"><img th:src="@{/product/ShowProductPic} + '?productId=' + ${productVO.productId}" width="100px"></div> -->
+<!--         </div> -->
+        
+        
+<!--         bootstrap彈窗 -->
+				<div class="mb-3">
+<!-- 				<button type="button" class="btn btn-primary" data-bs-toggle="modal" th:attr="'data-bs-target=#exampleModal_' + ${productVO.productId}"> -->
+				<button type="button" class="btn btn-primary" data-bs-toggle="modal" th:attr="data-bs-target='#exampleModal_' + ${productVO.productId}">
+				  圖片
+				</button>
+				</div>
+				
+<!-- 				Modal -->
+				<div class="modal fade" th:id="'exampleModal_'+${productVO.productId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				  <div class="modal-dialog">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLabel">圖片</h5>
+				        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				      </div>
+				      <div class="modal-body">
+				        <th:block th:each="productPhoto : ${productVO.productPhotoVos}"><!-- 找單個商品多張圖片Set -->
+				        <p th:text="${productPhoto.productPhotoId}"></p>
+				        	<div th:if="${productVO.productPhotoVos}"><!-- 單個商品多張圖片把每張圖片一個個拿出來 -->
+								<input type="hidden" name="productPhotoIds" th:value="${productPhoto.productPhotoId}">
+								<input type="file" class="productPhotos" name="productPhotos" th:attr="data-photo-id=${productPhoto.productPhotoId}" onchange="previewImage(event)">
+				        		<div th:id="'blob_holder_' + ${productPhoto.productPhotoId}"><img class="picture" th:src="@{/product/ShowProductPic(productId=${productVO.productId}, productPhotoId=${productPhoto.productPhotoId})}" width="300" height="300"></div>
+				        	</div>
+				        	 <input class="productPhotos" name="productPhotos" type="file" th:unless="${productVO.productPhotoVos}">
+				        </th:block>
+<!-- 				        <p th:text="${productVO.productPhotoVos}"></p> -->
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				        <button type="button" class="btn btn-primary">Save changes</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+				<!-- 這裡結束 -->
+        
 
         <!-- 提交按钮 -->
 <!--         <div class="mb-3" th:if="${getOne_For_Update}"> -->
@@ -95,60 +134,101 @@
 </div>
 </div>
 
+<!-- JavaScript part -->
+<script>
+// document.addEventListener("DOMContentLoaded", function(){
+	//清除提示信息
+	function hideContent(d) {
+	    // 此函數用於隱藏指定的HTML元素，參數 'd' 是元素的ID。
+	    // 通過 `document.getElementById(d)` 獲取要隱藏的元素。
+	    // `style.display = "none"` 會將元素的顯示樣式設置為"none"，讓它從頁面上消失。
+	    document.getElementById(d).style.display = "none";
+	}
+
+	// 照片上傳 - 預覽用
+	// 檢查瀏覽器是否支持FileReader
+	var filereader_support = typeof FileReader != 'undefined';
+	if (!filereader_support) {
+	    // 如果瀏覽器不支持FileReader，則向用戶彈出警告訊息。
+	    alert("不支持 FileReader");
+	}
+
+	// 接受的圖片文件類型列表
+	acceptedTypes = {
+	    'image/png' : true,
+	    'image/jpeg' : true,
+	    'image/gif' : true
+	};
+	
+// 	function previewImage() {
+// 		var upfile1 = document.getElementById("upFiles");
+// 		upfile1.addEventListener("change", function(event) {
+// 			var files = event.target.files || event.dataTransfer.files;
+// 			for (var i = 0; i < files.length; i++) {
+// 				previewfile(files[i])
+// 			}
+// 		}, false);
+// 	}
+
+	function previewImage(event) {
+    // 确保事件对象存在并能访问
+    var productPhotoId = event.target.getAttribute('data-photo-id'); // 获取 data-photo-id
+    var upfile1 = document.getElementById("blob_holder_" + productPhotoId); // 获取 blob_holder 元素
+
+    // 为文件输入框添加 "change" 事件监听器
+    var input = event.target; // 获取触发事件的 input 元素
+    var files = input.files || event.dataTransfer.files; // 获取文件列表
+    
+    // 遍历每个选中的文件，调用 `previewfile` 函数来处理每个文件。
+    for (var i = 0; i < files.length; i++) {
+        previewfile(files[i], 'blob_holder_' + productPhotoId); // 传递文件和容器 ID
+    }
+}
+
+	function previewfile(file,productPhotoId) {
+		var blob_holder = document.getElementById(productPhotoId);
+	    // 此函數用於預覽用戶上傳的圖片文件，檢查其格式並展示圖片。
+	    if (filereader_support === true && acceptedTypes[file.type] === true) {
+	        // 如果瀏覽器支持 FileReader 且文件類型是被接受的圖片格式，則繼續執行預覽。
+	        var reader = new FileReader(); // 創建一個新的 FileReader 實例。
+	        reader.onload = function(event) {
+	            // 當文件讀取完成後，會觸發此回調函數。
+	            var image = new Image(); // 創建新的圖片元素。
+	            image.src = event.target.result; // 將圖片的來源設置為讀取到的文件內容。
+	            image.width = 300;  // 設置預覽圖片的寬度。
+	            image.height = 300;  // 設置預覽圖片的高度。
+	            image.border = 2;   // 為圖片添加邊框。
+	            if (blob_holder.hasChildNodes()) {
+	                // 如果預覽區域中已經存在圖片，則將其移除。
+	                blob_holder.removeChild(blob_holder.childNodes[0]);
+	            }
+	            // 將新的圖片添加到預覽區域（`blob_holder` 是顯示預覽圖片的容器）。
+	            blob_holder.appendChild(image);
+	        };
+	        // 使用 FileReader 讀取圖片文件，並將其作為數據URL進行預覽。
+	        reader.readAsDataURL(file);
+	        // 文件讀取完成後，啟用提交按鈕，允許用戶提交。
+	        document.getElementById('submit').disabled = false;
+	    } else {
+	        // 如果文件不是接受的圖片類型，則顯示錯誤訊息及文件詳細資訊。
+	        blob_holder.innerHTML = "<div  style='text-align: left;'>" + 
+	            "● 文件名稱: " + file.name + "<br>" + 
+	            "● 文件類型: " + file.type + "<br>" + 
+	            "● 文件大小: " + file.size + "bytes" + "<br>" + 
+	            "● 上傳的ContentType限制: <b> <font color=red>image/png、image/jpeg、image/gif </font></b></div>";
+	        // 禁用提交按鈕，因為文件不符合類型要求。
+	        document.getElementById('submit').disabled = true;
+	    }
+	}
+	
+	
+// });
+
+</script>
 
 	<div th:replace="~{/back_end/include/include_bottom}"></div>
 
-<!-- JavaScript part -->
-<script type="text/javascript">
-//清除提示信息
-function hideContent(d) {
-     document.getElementById(d).style.display = "none";
-}
 
-//照片上傳-預覽用
-var filereader_support = typeof FileReader != 'undefined';
-if (!filereader_support) {
-	alert("No FileReader support");
-}
-acceptedTypes = {
-		'image/png' : true,
-		'image/jpeg' : true,
-		'image/gif' : true
-};
-function previewImage() {
-	var upfile1 = document.getElementById("productPhoto");
-	upfile1.addEventListener("change", function(event) {
-		var files = event.target.files || event.dataTransfer.files;
-		for (var i = 0; i < files.length; i++) {
-			previewfile(files[i])
-		}
-	}, false);
-}
-function previewfile(file) {
-	if (filereader_support === true && acceptedTypes[file.type] === true) {
-		var reader = new FileReader();
-		reader.onload = function(event) {
-			var image = new Image();
-			image.src = event.target.result;
-			image.width = 100;
-			image.height = 75;
-			image.border = 2;
-			if (blob_holder.hasChildNodes()) {
-				blob_holder.removeChild(blob_holder.childNodes[0]);
-			}
-			blob_holder.appendChild(image);
-		};
-		reader.readAsDataURL(file);
-		document.getElementById('submit').disabled = false;
-	} else {
-		blob_holder.innerHTML = "<div  style='text-align: left;'>" + "● filename: " + file.name
-				+ "<br>" + "● ContentTyp: " + file.type
-				+ "<br>" + "● size: " + file.size + "bytes"
-				+ "<br>" + "● 上傳ContentType限制: <b> <font color=red>image/png、image/jpeg、image/gif </font></b></div>";
-		document.getElementById('submit').disabled = true;
-	}
-}
-</script>
 
-</body>
-</html>
+<!-- </body> -->
+<!-- </html> -->

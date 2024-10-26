@@ -118,7 +118,8 @@ public class ShopOrderService {
 		obj.setReturnURL("http://211.23.128.214:5000");
 		
 		//返回網址(消費者點選此按鈕後,會將頁面導回到此設定的網址,須為外網網址)
-		obj.setClientBackURL("http://cactus-resort.ddns.net");
+//		obj.setClientBackURL("http://cactus-resort.ddns.net");
+		obj.setClientBackURL("http://localhost:8080");
 		
 		
 		obj.setNeedExtraPaidInfo("N");

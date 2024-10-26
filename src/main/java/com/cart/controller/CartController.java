@@ -3,12 +3,15 @@ package com.cart.controller;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
@@ -32,6 +35,7 @@ import com.member.model.MemberVO;
 import com.notification.model.NotificationService;
 import com.product.model.ProductServiceImpl;
 import com.product.model.ProductVO;
+import com.productphoto.model.ProductPhotoVo;
 import com.productpromotion.model.ShopDiscountProjectVO;
 import com.productpromotion.model.ShopDiscountService;
 import com.shoporder.model.ShopOrderService;
@@ -164,7 +168,7 @@ public class CartController {
     }
     //進入綠界
     @PostMapping("/checkoutOrder")
-    public String checkoutOrder(ShopOrderVO shopOrderVO, HttpSession session,ModelMap model,@RequestParam("productPromotion") String productPromotion) {
+    public String checkoutOrder(ShopOrderVO shopOrderVO, HttpSession session,ModelMap model) {
 
         //從Session中取得會員資料
         String email = (String) session.getAttribute("account");
@@ -176,7 +180,7 @@ public class CartController {
 
             shopOrderVO.setMember(memberVO);
             shopOrderVO.setOrderStatus(1);
-            shopOrderVO.setPromotion(productPromotion);
+//            shopOrderVO.setPromotion(productPromotion);
 
             //先將訂單做新增
             shopOrderSvc.addOrder(shopOrderVO);
@@ -194,7 +198,7 @@ public class CartController {
                     shopOrderDetailVO.setShopOrder(shopOrderVO);
                     shopOrderDetailVO.setProduct(productVO);
                     shopOrderDetailVO.setOrderQuantity(item.getQuantity());
-                    shopOrderDetailVO.setProductAmount( (int)((item.getQuantity()) * (item.getPrice()) * (Double.valueOf(productPromotion))) );
+                    shopOrderDetailVO.setProductAmount( (int)((item.getQuantity()) * (item.getPrice())));
 
                     shopOrderDetailSvc.addShopOrderDetail(shopOrderDetailVO);
 
@@ -216,6 +220,7 @@ public class CartController {
                     "親愛的"+ memberVO.getMemberName() +"，您好，您的訂單(編號:"+shopOrderVO.getShopOrderId()+")已於"+nowTime+"成功成立，非常感謝您的支持!!");
 
 //			System.out.println("message has send");
+            
             
 //			// 綠界串流
             String ecpayCheckout = shopOrderSvc.ecpayCheckout(shopOrderVO.getShopOrderId());
@@ -260,8 +265,8 @@ public class CartController {
 	}
 	
 	
-	 // 導入購物車頁面
-    @GetMapping("/shopCart02")
+	 // 新的導入購物車頁面
+    @GetMapping("/shopCart2")
     public String shopCart02(ModelMap model,HttpSession session) {
     	//活動折扣
     	LocalDate today = LocalDate.now();
@@ -270,7 +275,89 @@ public class CartController {
 		model.addAttribute("shopProductDiscount", shopProductDiscount);
 //    	session.setAttribute("shopProductDiscount", shopProductDiscount);
 		//到這
+		
+		//從Session中取得會員資料//傳入購物車資料
+        String email = (String) session.getAttribute("account");
+        List<Cart> cartVO = null;
+        Map<Integer,Integer> productFirstPhotoId = new HashMap<>();
+        if(email != null) {//有無登入會員
+        	Integer memberId = memSvc.findByEmail(email).getMemberId();
+            cartVO = cartSvc.findAllItem(memberId);
+            model.addAttribute("cartVO", cartVO);
+            
+            //確認有會員才找的到購物車
+            for(Cart cart : cartVO) {
+//            	cart.getProductId()
+            	ProductVO perProduct = productSvc.findById(cart.getProductId());
+            	Set<ProductPhotoVo> productPhotoVos = perProduct.getProductPhotoVos();
+            	if(productPhotoVos!=null && !productPhotoVos.isEmpty()) {
+    				ProductPhotoVo firstPhotoId = productPhotoVos.iterator().next();
+    				productFirstPhotoId.put(cart.getProductId(), firstPhotoId.getProductPhotoId());
+    			}
+            	
+            }
+        }
+        
+        
+        
+       
+        
+        model.addAttribute("productFirstPhotoId", productFirstPhotoId);
+        
+      //活動折扣
+    	LocalDate today2 = LocalDate.now();
+    	List<ShopDiscountProjectVO> shopProductDiscount2 = shopDiscountService.usePromotion(today2);
+//    	System.out.println("測試 = " + shopProductDiscount);
+		model.addAttribute("shopProductDiscount", shopProductDiscount2);
+        
+
+        
         return "front_end/product/cart";
     }
+    
+    
+  //由shop_cart點擊下單後進入此controller
+//    @GetMapping("/CartToCheckout")
+//    public String cartToCheckout(HttpSession session,ModelMap model,@RequestParam("productPromotion") String productPromotion) {
+//        MemberVO memberVO = memSvc.findByEmail((String)session.getAttribute("account"));
+//        model.addAttribute("memberVO", memberVO);
+////        System.out.println("測試 = " + productPromotion);
+//        model.addAttribute("productPromotion", productPromotion);
+//        
+//        
+//        return "front_end/product/shop_checkout";
+//    }
+    
+    
+    //新的確認結帳頁面，會員資料
+    @PostMapping("/CartToCheckout2")
+    public String cartToCheckout2(@RequestParam("productTotalValue") List<String> productTotalValue,//單品總價
+    							  @RequestParam("totalCount") String totalCount,//總價(包含折扣)
+    							  @RequestParam(value = "discount-amount", required = false) String discountAmount,//幾折
+    							  @RequestParam("productName") List<String> productName,//商品名稱
+    							  @RequestParam(value="productPromotion", required = false) String productPromotion//促銷 例:55折就是0.55
+    								,ModelMap model, HttpSession session) {
+        MemberVO memberVO = memSvc.findByEmail((String)session.getAttribute("account"));
+        model.addAttribute("memberVO", memberVO);
+//        System.out.println("測試 = " + productPromotion);
+//        model.addAttribute("productPromotion", productPromotion);
+        model.addAttribute("productTotalValues", productTotalValue);
+        model.addAttribute("totalCount",totalCount);
+        model.addAttribute("discountAmount",discountAmount);
+        model.addAttribute("productNames",productName);
+        model.addAttribute("productPromotion",productPromotion);
+//        System.out.println("productTotalValue = "+productTotalValue);
+//        System.out.println("totalCount = "+totalCount);
+//        System.out.println("discount-amount = "+discountAmount);
+//        System.out.println("productName = "+productName);
+//        System.out.println("productPromotion = "+productPromotion);
+        
+        
+        
+        return "front_end/product/checkout";
+    }
+    
+    
+
 	
 }

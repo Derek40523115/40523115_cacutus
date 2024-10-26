@@ -98,21 +98,21 @@
               <!-- SHOP SIDEBAR--><!-- 商品類別 -->
               <div class="col-lg-3 order-2 order-lg-1">
                 <h5 class="text-uppercase mb-4">Categories</h5>
-                <div class="py-2 px-4 bg-dark text-white mb-3"><strong class="small text-uppercase fw-bold">Fashion &amp; Acc</strong></div>
+                <div class="py-2 px-4 bg-dark text-white mb-3"><strong class="small text-uppercase fw-bold reset-anchor" data-value="">全部</strong></div>
                 <ul class="list-unstyled small text-muted ps-lg-4 font-weight-normal">
                 <th:block th:each="productCategoryVO : ${productCategoryList}">
-                  <li class="mb-2"><a class="reset-anchor" href="#!" th:text="${productCategoryVO.productCategoryName}"></a></li>
+                  <li class="mb-2"><a class="reset-anchor" href="#!" th:attr="data-value=${productCategoryVO.productCategoryName}" th:text="${productCategoryVO.productCategoryName}"></a></li>
                  </th:block>
                 </ul>
-                <div class="py-2 px-4 bg-light mb-3"><strong class="small text-uppercase fw-bold">Health &amp; Beauty</strong></div>
-                <ul class="list-unstyled small text-muted ps-lg-4 font-weight-normal">
-                  <li class="mb-2"><a class="reset-anchor" href="#!">Shavers</a></li>
-                  <li class="mb-2"><a class="reset-anchor" href="#!">bags</a></li>
-                  <li class="mb-2"><a class="reset-anchor" href="#!">Cosmetic</a></li>
-                  <li class="mb-2"><a class="reset-anchor" href="#!">Nail Art</a></li>
-                  <li class="mb-2"><a class="reset-anchor" href="#!">Skin Masks &amp; Peels</a></li>
-                  <li class="mb-2"><a class="reset-anchor" href="#!">Korean cosmetics</a></li>
-                </ul>
+<!--                 <div class="py-2 px-4 bg-light mb-3"><strong class="small text-uppercase fw-bold">Health &amp; Beauty</strong></div> -->
+<!--                 <ul class="list-unstyled small text-muted ps-lg-4 font-weight-normal"> -->
+<!--                   <li class="mb-2"><a class="reset-anchor" href="#!">Shavers</a></li> -->
+<!--                   <li class="mb-2"><a class="reset-anchor" href="#!">bags</a></li> -->
+<!--                   <li class="mb-2"><a class="reset-anchor" href="#!">Cosmetic</a></li> -->
+<!--                   <li class="mb-2"><a class="reset-anchor" href="#!">Nail Art</a></li> -->
+<!--                   <li class="mb-2"><a class="reset-anchor" href="#!">Skin Masks &amp; Peels</a></li> -->
+<!--                   <li class="mb-2"><a class="reset-anchor" href="#!">Korean cosmetics</a></li> -->
+<!--                 </ul> -->
                
                 <h6 class="text-uppercase mb-4">Price range</h6>
                 <div class="price-range pt-4 mb-5">
@@ -122,48 +122,48 @@
                     <div class="col-6 text-end"><strong class="small fw-bold text-uppercase">To</strong></div>
                   </div>
                 </div>
-                <h6 class="text-uppercase mb-3">Show only</h6>
-                <div class="form-check mb-1">
-                  <input class="form-check-input" type="checkbox" id="checkbox_1">
-                  <label class="form-check-label" for="checkbox_1">Returns Accepted</label>
-                </div>
-                <div class="form-check mb-1">
-                  <input class="form-check-input" type="checkbox" id="checkbox_2">
-                  <label class="form-check-label" for="checkbox_2">Returns Accepted</label>
-                </div>
-                <div class="form-check mb-1">
-                  <input class="form-check-input" type="checkbox" id="checkbox_3">
-                  <label class="form-check-label" for="checkbox_3">Completed Items</label>
-                </div>
-                <div class="form-check mb-1">
-                  <input class="form-check-input" type="checkbox" id="checkbox_4">
-                  <label class="form-check-label" for="checkbox_4">Sold Items</label>
-                </div>
-                <div class="form-check mb-1">
-                  <input class="form-check-input" type="checkbox" id="checkbox_5">
-                  <label class="form-check-label" for="checkbox_5">Deals &amp; Savings</label>
-                </div>
-                <div class="form-check mb-4">
-                  <input class="form-check-input" type="checkbox" id="checkbox_6">
-                  <label class="form-check-label" for="checkbox_6">Authorized Seller</label>
-                </div>
-                <h6 class="text-uppercase mb-3">Buying format</h6>
-                <div class="form-check mb-1">
-                  <input class="form-check-input" type="radio" name="customRadio" id="radio_1">
-                  <label class="form-check-label" for="radio_1">All Listings</label>
-                </div>
-                <div class="form-check mb-1">
-                  <input class="form-check-input" type="radio" name="customRadio" id="radio_2">
-                  <label class="form-check-label" for="radio_2">Best Offer</label>
-                </div>
-                <div class="form-check mb-1">
-                  <input class="form-check-input" type="radio" name="customRadio" id="radio_3">
-                  <label class="form-check-label" for="radio_3">Auction</label>
-                </div>
-                <div class="form-check mb-1">
-                  <input class="form-check-input" type="radio" name="customRadio" id="radio_4">
-                  <label class="form-check-label" for="radio_4">Buy It Now</label>
-                </div>
+<!--                 <h6 class="text-uppercase mb-3">Show only</h6> -->
+<!--                 <div class="form-check mb-1"> -->
+<!--                   <input class="form-check-input" type="checkbox" id="checkbox_1"> -->
+<!--                   <label class="form-check-label" for="checkbox_1">Returns Accepted</label> -->
+<!--                 </div> -->
+<!--                 <div class="form-check mb-1"> -->
+<!--                   <input class="form-check-input" type="checkbox" id="checkbox_2"> -->
+<!--                   <label class="form-check-label" for="checkbox_2">Returns Accepted</label> -->
+<!--                 </div> -->
+<!--                 <div class="form-check mb-1"> -->
+<!--                   <input class="form-check-input" type="checkbox" id="checkbox_3"> -->
+<!--                   <label class="form-check-label" for="checkbox_3">Completed Items</label> -->
+<!--                 </div> -->
+<!--                 <div class="form-check mb-1"> -->
+<!--                   <input class="form-check-input" type="checkbox" id="checkbox_4"> -->
+<!--                   <label class="form-check-label" for="checkbox_4">Sold Items</label> -->
+<!--                 </div> -->
+<!--                 <div class="form-check mb-1"> -->
+<!--                   <input class="form-check-input" type="checkbox" id="checkbox_5"> -->
+<!--                   <label class="form-check-label" for="checkbox_5">Deals &amp; Savings</label> -->
+<!--                 </div> -->
+<!--                 <div class="form-check mb-4"> -->
+<!--                   <input class="form-check-input" type="checkbox" id="checkbox_6"> -->
+<!--                   <label class="form-check-label" for="checkbox_6">Authorized Seller</label> -->
+<!--                 </div> -->
+<!--                 <h6 class="text-uppercase mb-3">Buying format</h6> -->
+<!--                 <div class="form-check mb-1"> -->
+<!--                   <input class="form-check-input" type="radio" name="customRadio" id="radio_1"> -->
+<!--                   <label class="form-check-label" for="radio_1">All Listings</label> -->
+<!--                 </div> -->
+<!--                 <div class="form-check mb-1"> -->
+<!--                   <input class="form-check-input" type="radio" name="customRadio" id="radio_2"> -->
+<!--                   <label class="form-check-label" for="radio_2">Best Offer</label> -->
+<!--                 </div> -->
+<!--                 <div class="form-check mb-1"> -->
+<!--                   <input class="form-check-input" type="radio" name="customRadio" id="radio_3"> -->
+<!--                   <label class="form-check-label" for="radio_3">Auction</label> -->
+<!--                 </div> -->
+<!--                 <div class="form-check mb-1"> -->
+<!--                   <input class="form-check-input" type="radio" name="customRadio" id="radio_4"> -->
+<!--                   <label class="form-check-label" for="radio_4">Buy It Now</label> -->
+<!--                 </div> -->
               </div>
               <!-- SHOP LISTING-->
               <div class="col-lg-9 order-1 order-lg-2 mb-5 mb-lg-0">
@@ -187,14 +187,15 @@
                     </ul>
                   </div>
                 </div>
-                <div class="row">
+                <div class="row" id="Product">
                   <!-- PRODUCT-->
-                  <div class="col-lg-4 col-sm-6 product-men" th:if="${productVO.productStatus}" th:each="productVO : ${productList}">
+                  <div class="col-lg-4 col-sm-6 product-men" th:if="${productVO.productStatus}" th:each="productVO : ${productList}" th:attr="data-category=${productVO.productCategoryVO.productCategoryName}">
                   <input type="hidden" class="addToCartId" name="productId" th:value="${productVO.productId}"/>
-                  <input type="hidden" id="productCategory" th:text="${productVO.productCategoryVO.productCategoryName}"/>
+<!--                   <input type="hidden" th:id="'productCategory_' + ${productVO.productId}" th:attr="data_category=${productVO.productCategoryVO.productCategoryName}"/> -->
                     <div class="product text-center">
                       <div class="mb-3 position-relative">
-                        <div class="badge text-white bg-"></div><a class="d-block" th:href="@{'/product/listOneProduct2?productId=' + ${productVO.productId} + ''}"><img class="img-fluid w-100" th:src="@{/product/ShowProductPic} + '?productId=' + ${productVO.productId}" alt="..."></a>
+                        <div class="badge text-white bg-"></div><a class="d-block" th:href="@{/product/listOneProduct2(productId=${productVO.productId})}" ><img class="img-fluid w-100" th:src="@{/product/ShowProductPic(productId=${productVO.productId}, productPhotoId=${productFirstPhotoId[productVO.productId]})}"  alt="..."></a>
+<!--                         <div class="badge text-white bg-"></div><a class="d-block" th:href="@{'/product/listOneProduct2?productId=' + ${productVO.productId} + '&productPhotoId=' + ${productFirstPhotoId[productVO.productId]}}"><img class="img-fluid w-100" th:src="@{/product/ShowProductPic} + '?productId=' + ${productVO.productId} + '&productPhotoId=' + ${productFirstPhotoId[productVO.productId]}}" alt="..."></a> -->
                         <div class="product-overlay">
                           <ul class="mb-0 list-inline">
                             <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-outline-dark" href="#!"><i class="far fa-heart"></i></a></li>
@@ -203,7 +204,7 @@
                           </ul>
                         </div>
                       </div>
-                      <h6> <a class="reset-anchor" th:href="@{'/product/listOneProduct2?productId=' + ${productVO.productId} + ''}" th:text="${productVO.productName}"></a></h6>
+                      <h6> <a class="reset-anchor" th:href="@{/product/listOneProduct2(productId=${productVO.productId})}" th:text="${productVO.productName}"></a></h6>
                       <p class="small text-muted" th:text="'$' + ${productVO.productPrice}" ></p>
                     </div>
                   </div>
@@ -390,14 +391,39 @@
     var currentPage = 1; // 當前頁碼
     var selectedCategory = ""; // 保存當前選中的活動類别
     var currentSearchKeyword = ""; // 保存當前搜尋關鍵字
+    var priceSort = "";//價格排序	$(".selectpicker").val()
     var searchTimeout;
     
-    $(".reset-anchor").on("click", function(){
-    	var keyword = $(this).text();
+    $(".reset-anchor").on("click", function(){//點擊產品分類按鈕
+    	var keyword = $(this).attr("data-value");
     	selectedCategory = keyword;
 //     	console.log(selectedCategory);
     	currentPage = 1; // 重置頁碼為1
     	searchItems(currentSearchKeyword, selectedCategory);
+    });
+    
+//===============================價格排序====================================
+    $(".selectpicker").on("change", function(){
+    	priceSort = $(".selectpicker").val();
+//     	console.log(priceSort);
+		var items = $(".product-men");
+		
+		items.sort(function(a,b){
+			let priceA = parseFloat($(a).find("p.small.text-muted").text().replace("$",""));
+			let priceB = parseFloat($(b).find("p.small.text-muted").text().replace("$",""));
+// 			console.log("priceA="+priceA);
+// 			console.log("priceB="+priceB);
+			if(priceSort === "low-high")
+				return priceA - priceB;
+			else if(priceSort === "high-low")
+				return priceB - priceA;
+			else
+				return 0;
+		});
+// 		console.log($("#Product")[0]);
+		$("#Product").empty();
+		
+		$("#Product").append(items);
     });
     
     function searchItems(searchKeyword, categoryKeyword){
@@ -406,14 +432,20 @@
 //     	 console.log(text);
 //     	 console.log(categoryKeyword);
 //     	 console.log(text.indexOf(categoryKeyword));
+
     	 var filteredItems = $(".product-men").filter(function() {
+//     		 console.log(this);//每個產品
+    		 var category = $(this).attr("data-category");
+//     		 console.log(category);
+    		 console.log(category.indexOf(searchKeyword));
     		 var text = $(this).text().trim().toLowerCase();
+//     		 console.log(text);
     		 var isVisible = (text.indexOf(searchKeyword) > -1 || searchKeyword === "") &&
-				 (text.indexOf(categoryKeyword) > -1 || categoryKeyword === "");
-//     		 console.log(isVisible);
+				 (category.indexOf(categoryKeyword) > -1 || categoryKeyword === "");
+
 			return isVisible;
     	 });
-//     	 console.log(filteredItems.length);
+
     	 
     	 var totalMatches = filteredItems.length;
          var totalPages = Math.ceil(totalMatches / itemsPerPage);
@@ -459,11 +491,7 @@
     
    });
 	</script>
-	
-	<script>
-       
-        
-      </script>
+
       
       
       

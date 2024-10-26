@@ -18,7 +18,9 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 
 import com.activities_order.model.ActivityOrderVO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.notification.model.NotificationVO;
+import com.productcomment.model.ProductCommentVO;
 import com.shoporder.model.ShopOrderVO;
 
 @Entity
@@ -99,8 +101,23 @@ public class MemberVO implements java.io.Serializable{
 	@OneToMany(mappedBy = "member" , cascade = CascadeType.ALL)
 	private Set<ShopOrderVO> shopOrderVO;
 	
+	//商品評論
+	@OneToMany(mappedBy="member", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private Set<ProductCommentVO> productCommentVO;
+		
 	
-	
+	public Set<ProductCommentVO> getProductCommentVO() {
+		return productCommentVO;
+	}
+
+
+	public void setProductCommentVO(Set<ProductCommentVO> productCommentVO) {
+		this.productCommentVO = productCommentVO;
+	}
+
+
+
 	public Set<ShopOrderVO> getShopOrderVO() {
 		return shopOrderVO;
 	}

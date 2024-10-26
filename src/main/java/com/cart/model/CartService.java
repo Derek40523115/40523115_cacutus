@@ -19,7 +19,7 @@ public class CartService {
         // 拿到前端的購物項 先轉成JSON物件
         Gson gson = new Gson();
         String dtoString = gson.toJson(cartItem);
-//        System.out.println("dtoString = " + dtoString);
+        System.out.println("dtoString = " + dtoString);
 
         JsonObject newItem = gson.fromJson(dtoString, JsonObject.class);
 
@@ -50,7 +50,7 @@ public class CartService {
             } else {
                 // 如果購物車存在
 
-                //  String cartStr變成JSONArray
+                //  String cartStr變成JSONArray//原本購物車資料
                 cart = gson.fromJson(cartStr, JsonArray.class);
 
                 // 檢查商品是不是已經在購物車
@@ -189,9 +189,11 @@ public class CartService {
                         //修改數量為新的數量
                         oldItem.addProperty("quantity", newQuantity);
                         itemExists = true; // 標記商品已存在購物車中
+//                        System.out.println("修改數量 = "+oldItem.toString());
                         break;
                     }
                 }
+                
 
                 // 如果商品不在，加進購物車
                 if (!itemExists) {
