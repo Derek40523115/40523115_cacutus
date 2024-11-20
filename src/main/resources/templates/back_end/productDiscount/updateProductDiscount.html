@@ -1,0 +1,162 @@
+<div th:replace="~{/back_end/include/include_top}"></div>
+<style>
+
+
+.modal-body{
+
+}
+</style>
+<body>
+
+	<div th:replace="~{/back_end/include/include_body}"></div>
+
+<div class="unique">
+	<div class="container">
+    <h3 class="mt-5 mb-3"><b>商品信息填寫</b></h3>
+	    <form th:action="@{update}" method="post" th:object="${shopDiscountProjectVO}" enctype="multipart/form-data">
+	
+	
+	<!-- 折扣編號 -->
+        <div class="mb-3">
+            <label for="promotionId" class="form-label">折扣編號:</label>
+            <input type="text" class="form-control" id="promotionId" th:field="*{promotionId}" readonly>
+        </div>
+	<!--  折扣名稱 -->
+	        <div class="mb-3">
+	            <label for="promotionTitle" class="form-label">折扣標題</label>
+	            <input type="text" class="form-control" id="promotionTitle" th:field="*{promotionTitle}" placeholder="請輸入折扣標題">
+	        	<span  th:if="${#fields.hasErrors('promotionTitle')}" th:errors="*{promotionTitle}" class="error" id="productName.errors"></span>
+	        </div>
+
+        
+        <!-- 折扣敘述 -->
+        <div class="mb-3">
+            <label for="promotionContent" class="form-label">折扣敘述</label>
+            <textarea class="form-control" id="promotionContent" th:field="*{promotionContent}" rows="3"></textarea>
+            <span  th:if="${#fields.hasErrors('promotionContent')}" th:errors="*{promotionContent}" class="error" id="promotionContent.errors"></span>
+        </div>
+
+
+        <!-- 上下架 -->
+        <div class="mb-3">
+            <label for="promotionState" class="form-label">折扣狀態</label>
+            <select class="form-control" id="promotionState" th:field="*{promotionState}">
+                 <option value="true">上架</option>
+                 <option value="false">下架</option>
+            </select>
+        </div>
+        <div class="mb-3">
+         <label class="form-label">折扣</label>
+         <select class="form-control" th:field="*{promotionCoupon}" >
+                <option value="1">無</option>
+                <option value="0.95">95折</option>
+                <option value="0.9">9折</option>
+                <option value="0.85">85折</option>
+                <option value="0.8">8折</option>
+                <option value="0.75">75折</option>
+                <option value="0.7">7折</option>
+                <option value="0.65">65折</option>
+                <option value="0.6">6折</option>
+                <option value="0.55">55折</option>
+                <option value="0.5">5折</option>
+                <option value="0.45">45折</option>
+                <option value="0.4">4折</option>
+                <option value="0.35">35折</option>
+                <option value="0.3">3折</option>
+                <option value="0.25">25折</option>
+                <option value="0.2">2折</option>
+                <option value="0.15">15折</option>
+                <option value="0.1">1折</option>
+            </select>
+        </div>
+        
+        <!-- 折扣時間 -->
+         <div>
+            <label>促銷時間起:</label>
+            <input type="date" name="promotionStarted" th:field="*{promotionStarted}" th:value="@{promotionStarted}" onclick="hideContent('promotionStarted.errors');" onchange="setMinEndDate();" id="promotionStarted"/><br/>
+            <span  th:if="${#fields.hasErrors('promotionStarted')}" th:errors="*{promotionStarted}" class="error" id="promotionStarted.errors"></span>
+        </div>
+
+        <div>
+            <label>促銷時間迄:</label>
+            <input type="date" name="promotionEnd" th:field="*{promotionEnd}" th:value="@{promotionEnd}" onclick="hideContent('promotionEnd.errors');" onchange="setMaxStartDate();" id="promotionEnd" /><br/>
+            <span  th:if="${#fields.hasErrors('promotionEnd')}" th:errors="*{promotionEnd}" class="error" id="promotionEnd.errors"></span>
+        </div>
+
+        <!-- 提交按钮 -->
+        <button type="submit" class="btn btn-primary">提交新增</button>
+    </form>
+</div>
+</div>	
+<!-- 從房間折扣貼來的 -->
+<script>
+    function setMinEndDate() {
+        var startDate = document.getElementById('promotionStarted').value;
+        document.getElementById('promotionEnd').min = startDate;
+    }
+    
+    function setMaxStartDate() {
+        var endDate = document.getElementById('promotionEnd').value;
+            document.getElementById('promotionStarted').max = endDate;
+    }
+    
+</script>
+
+<!-- 到這 -->>
+
+	<div th:replace="~{/back_end/include/include_bottom}"></div>
+
+<!-- JavaScript part -->
+<script type="text/javascript">
+//清除提示信息
+function hideContent(d) {
+     document.getElementById(d).style.display = "none";
+}
+
+//照片上傳-預覽用
+var filereader_support = typeof FileReader != 'undefined';
+if (!filereader_support) {
+	alert("No FileReader support");
+}
+acceptedTypes = {
+		'image/png' : true,
+		'image/jpeg' : true,
+		'image/gif' : true
+};
+function previewImage() {
+	var upfile1 = document.getElementById("productPhoto");
+	upfile1.addEventListener("change", function(event) {
+		var files = event.target.files || event.dataTransfer.files;
+		for (var i = 0; i < files.length; i++) {
+			previewfile(files[i])
+		}
+	}, false);
+}
+function previewfile(file) {
+	if (filereader_support === true && acceptedTypes[file.type] === true) {
+		var reader = new FileReader();
+		reader.onload = function(event) {
+			var image = new Image();
+			image.src = event.target.result;
+			image.width = 100;
+			image.height = 75;
+			image.border = 2;
+			if (blob_holder.hasChildNodes()) {
+				blob_holder.removeChild(blob_holder.childNodes[0]);
+			}
+			blob_holder.appendChild(image);
+		};
+		reader.readAsDataURL(file);
+		document.getElementById('submit').disabled = false;
+	} else {
+		blob_holder.innerHTML = "<div  style='text-align: left;'>" + "● filename: " + file.name
+				+ "<br>" + "● ContentTyp: " + file.type
+				+ "<br>" + "● size: " + file.size + "bytes"
+				+ "<br>" + "● 上傳ContentType限制: <b> <font color=red>image/png、image/jpeg、image/gif </font></b></div>";
+		document.getElementById('submit').disabled = true;
+	}
+}
+</script>
+
+</body>
+</html>

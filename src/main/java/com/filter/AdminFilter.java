@@ -118,7 +118,9 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 				   "/product/updateCategory",
 				   "/product/delete",
 				   "/product/listProducts_ByCompositeQuery",
-
+				   "/productDiscount/getAllProductDiscount",//我用的
+				   
+				   
 				   "/roomPromotion/findRoomPromotionById",
 				   "/roomPromotion/searchRoomPromotion",
 				   "/roomPromotion/getAllRoomPromotion",
